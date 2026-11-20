@@ -1,0 +1,558 @@
+{
+  "item-controller-speed": {
+    "defaultMessage": "控制器速度：",
+    "description": "Label for per-item controller playback speed"
+  },
+  "kQS+8Blk4a": {
+    "defaultMessage": "就绪。添加图像、GIF、WebP或打开容器文件 (.bin)。",
+    "description": "Initial status bar message on application startup"
+  },
+  "E7FVzJJt/s": {
+    "defaultMessage": "设备未连接",
+    "description": "Device status when fan is not connected via USB HID"
+  },
+  "53mtQ9AJKD": {
+    "defaultMessage": "新建项目",
+    "description": "Default project title"
+  },
+  "c1UsWg4T0w": {
+    "defaultMessage": "文件已加载: {title} (帧数: {frames}, 项目数: {items})",
+    "description": "Status message after loading a binary container file"
+  },
+  "l9SEvwP5zA": {
+    "defaultMessage": "已添加“{filename}”: {duration} 秒 (+{frames} 帧)。项目总计: {total_duration} 秒",
+    "description": "Status message after adding a media file to the playlist"
+  },
+  "7nZkzd7ccn": {
+    "defaultMessage": "✅ 成功写入SD/USB: {target} (帧数: {frames})",
+    "description": "Status message when project is saved to removable media"
+  },
+  "hg4xJ33y3l": {
+    "defaultMessage": "❌ 写入磁盘错误: {error}",
+    "description": "Status message when writing to removable media fails"
+  },
+  "55g2yD++Nd": {
+    "defaultMessage": "❌ 项目准备错误: {error}",
+    "description": "Status message when container export preparation fails"
+  },
+  "G6Ig6kcUTS": {
+    "defaultMessage": "打开 {path} 错误: {error}",
+    "description": "Status message on failed drag-and-drop bin open"
+  },
+  "9rOUKvBHvX": {
+    "defaultMessage": "添加 {path} 错误: {error}",
+    "description": "Status message on failed drag-and-drop media add"
+  },
+  "kGGqtc4j8C": {
+    "defaultMessage": "➕ 添加媒体 (PNG/JPG/GIF/WebP)",
+    "description": "Button to open file picker for images or animations"
+  },
+  "jX6AvrfoC8": {
+    "defaultMessage": "图像与动画",
+    "description": "File filter name for media files"
+  },
+  "ENcK8Dp12O": {
+    "defaultMessage": "添加错误: {error}",
+    "description": "Status message when adding media file from dialog fails"
+  },
+  "kQedZdeygE": {
+    "defaultMessage": "📂 打开 .bin",
+    "description": "Button to open existing .bin container file"
+  },
+  "r4/+pd8Ysw": {
+    "defaultMessage": "全息风扇文件 (*.bin)",
+    "description": "File filter name for .bin containers"
+  },
+  "5DCddiFqBS": {
+    "defaultMessage": "读取 .bin 错误: {error}",
+    "description": "Status message when opening .bin fails"
+  },
+  "ObslHDmnat": {
+    "defaultMessage": "💾 保存 .bin...",
+    "description": "Button to save container with custom filename"
+  },
+  "HDOPjyrOX1": {
+    "defaultMessage": "全息风扇文件 (*.bin)",
+    "description": "File filter name for saving .bin container"
+  },
+  "QG+p6rf4bk": {
+    "defaultMessage": "✅ 文件保存成功: {path}",
+    "description": "Status message when container is saved successfully"
+  },
+  "LISHSbFF27": {
+    "defaultMessage": "❌ 保存错误: {error}",
+    "description": "Status message when saving container fails"
+  },
+  "jWty8cTPbX": {
+    "defaultMessage": "错误: {error}",
+    "description": "Generic error status message"
+  },
+  "7HfB/G5Xgd": {
+    "defaultMessage": "文件名:",
+    "description": "Label for the output filename text input"
+  },
+  "C5hVMdQOIP": {
+    "defaultMessage": "⚡ 写入“{drive}”",
+    "description": "Button to write project to detected removable drive"
+  },
+  "0KydTo/E+B": {
+    "defaultMessage": "⚡ 写入SD卡...",
+    "description": "Button to select SD card root and save project"
+  },
+  "sAzHQ3vREU": {
+    "defaultMessage": "选择SD卡根目录",
+    "description": "Title of directory picker dialog for SD card export"
+  },
+  "FEqvEHCfLK": {
+    "defaultMessage": "🖼 导出帧为PNG",
+    "description": "Button to export polar frames as PNG images"
+  },
+  "SjLyTukcub": {
+    "defaultMessage": "没有可导出的帧！",
+    "description": "Status message when PNG export has no frames"
+  },
+  "6d+zh/ZGg6": {
+    "defaultMessage": "✅ 已导出 {count} 帧至 {path}",
+    "description": "Status message on successful PNG export"
+  },
+  "1M3T78nizM": {
+    "defaultMessage": "❌ 导出错误: {error}",
+    "description": "Status message when PNG export fails"
+  },
+  "K2VF713dXp": {
+    "defaultMessage": "🔌 HID连接",
+    "description": "Button to test USB HID connection with fan device"
+  },
+  "kZHoI0vtku": {
+    "defaultMessage": "已连接 (VID: 0x0483, PID: 0x5750)",
+    "description": "Device status label when USB HID device is connected"
+  },
+  "jBiCKXqcqp": {
+    "defaultMessage": "已通过USB HID检测到全息风扇，准备就绪。",
+    "description": "Status message when fan device responds to status query"
+  },
+  "9qy9ywbJVX": {
+    "defaultMessage": "响应: {error}",
+    "description": "Device status when HID query returns an error"
+  },
+  "+hSjMvDnDt": {
+    "defaultMessage": "未连接",
+    "description": "Device status when USB HID connection fails"
+  },
+  "3Q2S73FQnA": {
+    "defaultMessage": "USB状态: {error}",
+    "description": "Status message reporting USB connection error"
+  },
+  "yKBlcjhwlW": {
+    "defaultMessage": "状态: {message}",
+    "description": "Status bar prefix for general status messages"
+  },
+  "SrY9oEXlF1": {
+    "defaultMessage": "可移动磁盘: 未检测到",
+    "description": "Status bar message when no removable drives are found"
+  },
+  "Fo2SzW87Vn": {
+    "defaultMessage": "可移动磁盘: {path}",
+    "description": "Status bar message showing first detected removable drive"
+  },
+  "1lbL+z8Ej2": {
+    "defaultMessage": "USB HID: {status}",
+    "description": "Status bar prefix for USB HID hardware status"
+  },
+  "CvsdvQl4i2": {
+    "defaultMessage": "📋 项目播放列表",
+    "description": "Heading for playlist management section"
+  },
+  "UCPHDqKxIM": {
+    "defaultMessage": "总计: {items} 个项目 | ⏱ {duration} 秒 ({frames} 帧)",
+    "description": "Playlist summary displaying total items, duration, and frame count"
+  },
+  "yqI9rC1UGO": {
+    "defaultMessage": "序号",
+    "description": "Column header: row number"
+  },
+  "Hhcg202NmT": {
+    "defaultMessage": "文件名",
+    "description": "Column header: media file name"
+  },
+  "XrRHtIHUlp": {
+    "defaultMessage": "时长",
+    "description": "Column header: item duration in seconds"
+  },
+  "dwBGgeuEmS": {
+    "defaultMessage": "帧范围",
+    "description": "Column header: frame range and count"
+  },
+  "Uc0Q+zi1p7": {
+    "defaultMessage": "旋转",
+    "description": "Column header: rotation angle in degrees"
+  },
+  "nkGYwoSEb4": {
+    "defaultMessage": "{seconds} 秒",
+    "description": "Seconds abbreviation in playlist table"
+  },
+  "xNkrCvruuU": {
+    "defaultMessage": "删除",
+    "description": "Button to delete selected playlist item"
+  },
+  "fg1CjuFlbR": {
+    "defaultMessage": "已从播放列表中删除项目",
+    "description": "Status message when an item is deleted"
+  },
+  "2Z1F9G+Vti": {
+    "defaultMessage": "上移",
+    "description": "Button to move selected playlist item up"
+  },
+  "69RDH/9G83": {
+    "defaultMessage": "下移",
+    "description": "Button to move selected playlist item down"
+  },
+  "+mdItT3d2d": {
+    "defaultMessage": "全部清空",
+    "description": "Button to clear all playlist items"
+  },
+  "YariWiidXA": {
+    "defaultMessage": "播放列表已完全清空",
+    "description": "Status message when entire playlist is cleared"
+  },
+  "9eUNvMvjnj": {
+    "defaultMessage": "112 个径向 LED · 450 条扫描线 · 每帧 114,688 字节",
+    "description": "Verified controller geometry and encoded frame size"
+  },
+  "4CvH9aqo0L": {
+    "defaultMessage": "🌀 POV显示预览",
+    "description": "Heading for circular POV display preview area"
+  },
+  "jYfjW9CF1d": {
+    "defaultMessage": "无显示帧\n请添加媒体文件或 .bin 文件",
+    "description": "Placeholder text inside empty preview circle"
+  },
+  "ysaHMOXJmm": {
+    "defaultMessage": "▶ 播放",
+    "description": "Button to start animation playback"
+  },
+  "sBSOpnhaQC": {
+    "defaultMessage": "⏸ 暂停",
+    "description": "Button to pause animation playback"
+  },
+  "31TyLNOENW": {
+    "defaultMessage": "FPS:",
+    "description": "Label for playback speed slider"
+  },
+  "nKknfsG4QU": {
+    "defaultMessage": "帧:",
+    "description": "Label for current frame number slider"
+  },
+  "5uC8WNZjem": {
+    "defaultMessage": "/ {total} ({time} 秒)",
+    "description": "Frame progress indicator showing total frames and timestamp"
+  },
+  "mMhhcJv3lr": {
+    "defaultMessage": "🛠 项目 #{index} 设置: “{title}”",
+    "description": "Heading for media item transform inspector"
+  },
+  "0Co968QV9T": {
+    "defaultMessage": "⏱ 时长:",
+    "description": "Label for item display duration controls"
+  },
+  "rzo86PTGOu": {
+    "defaultMessage": "- 0.5秒",
+    "description": "Button to decrease item duration by 0.5 seconds"
+  },
+  "vThzy9Ppz5": {
+    "defaultMessage": " 秒",
+    "description": "Suffix for duration drag value"
+  },
+  "p3CfNrVI1V": {
+    "defaultMessage": "+ 0.5秒",
+    "description": "Button to increase item duration by 0.5 seconds"
+  },
+  "H0yRpP467y": {
+    "defaultMessage": "预设:",
+    "description": "Label for quick duration preset buttons"
+  },
+  "B3tbQMVjFG": {
+    "defaultMessage": "1秒",
+    "description": "Preset button for 1 second duration"
+  },
+  "vMkDquV5ag": {
+    "defaultMessage": "2秒",
+    "description": "Preset button for 2 seconds duration"
+  },
+  "oXUTSLGO46": {
+    "defaultMessage": "5秒",
+    "description": "Preset button for 5 seconds duration"
+  },
+  "FFSlqGic86": {
+    "defaultMessage": "10秒",
+    "description": "Preset button for 10 seconds duration"
+  },
+  "lAkQUZivbt": {
+    "defaultMessage": "总计: {duration} 秒 ({frames} 帧, 约 {cycles} 个循环)",
+    "description": "Item duration summary with cycle calculation for animated media"
+  },
+  "rTdH7RhLnJ": {
+    "defaultMessage": "总计: {duration} 秒 ({frames} 帧)",
+    "description": "Item duration summary for static media"
+  },
+  "HrfQ+Hr+NA": {
+    "defaultMessage": "尺寸:",
+    "description": "Label for media framing mode selection"
+  },
+  "IiET33RuND": {
+    "defaultMessage": "适应圆形",
+    "description": "Framing mode option to preserve aspect ratio with borders"
+  },
+  "BhLlLcrnvZ": {
+    "defaultMessage": "保持宽高比完整适应圆形内部 (黑边在空中透明)",
+    "description": "Tooltip for Fit to circle option"
+  },
+  "BZrCswOk+a": {
+    "defaultMessage": "填充圆形",
+    "description": "Framing mode option to cover entire circle cropping edges"
+  },
+  "HBE5HHbfnL": {
+    "defaultMessage": "保持宽高比填满整个圆形无边框 (裁剪多余边缘)",
+    "description": "Tooltip for Fill circle option"
+  },
+  "7BQbiC2tDl": {
+    "defaultMessage": "拉伸",
+    "description": "Framing mode option to stretch to 450x450 ignoring aspect ratio"
+  },
+  "xgfO+GMO+c": {
+    "defaultMessage": "将图像拉伸至整个450x450圆形，不保持宽高比",
+    "description": "Tooltip for Stretch option"
+  },
+  "x2NWi/YU3g": {
+    "defaultMessage": "缩放:",
+    "description": "Label for zoom scale controls"
+  },
+  "jaocLXxYho": {
+    "defaultMessage": "- 10%",
+    "description": "Button to decrease zoom scale by 10%"
+  },
+  "HKx+K7g9a0": {
+    "defaultMessage": "+ 10%",
+    "description": "Button to increase zoom scale by 10%"
+  },
+  "sRfJYihXLF": {
+    "defaultMessage": "100%",
+    "description": "Button to reset zoom scale to 100%"
+  },
+  "6KU53mq9bI": {
+    "defaultMessage": "偏移:",
+    "description": "Label for position offset controls"
+  },
+  "tOak+AI1z8": {
+    "defaultMessage": "< 向左",
+    "description": "Button to shift image position left"
+  },
+  "ZgtxR576tR": {
+    "defaultMessage": "> 向右",
+    "description": "Button to shift image position right"
+  },
+  "UGhtpZgYNl": {
+    "defaultMessage": "^ 向上",
+    "description": "Button to shift image position up"
+  },
+  "s1CMb8DVO1": {
+    "defaultMessage": "v 向下",
+    "description": "Button to shift image position down"
+  },
+  "zEwKzfsUnD": {
+    "defaultMessage": "重置 (0,0)",
+    "description": "Button to reset position offset to origin"
+  },
+  "vcqQ14kUL9": {
+    "defaultMessage": "旋转:",
+    "description": "Label for rotation and mirror controls"
+  },
+  "B/MWGahZVp": {
+    "defaultMessage": "-90°",
+    "description": "Button to rotate 90 degrees counter-clockwise"
+  },
+  "xrr3vXaRTK": {
+    "defaultMessage": "逆时针旋转90度",
+    "description": "Tooltip for counter-clockwise rotation button"
+  },
+  "doPD4HCzB1": {
+    "defaultMessage": "+90°",
+    "description": "Button to rotate 90 degrees clockwise"
+  },
+  "rqVmI566Iz": {
+    "defaultMessage": "顺时针旋转90度",
+    "description": "Tooltip for clockwise rotation button"
+  },
+  "4KwQXqDzZq": {
+    "defaultMessage": "180°",
+    "description": "Button to rotate 180 degrees"
+  },
+  "rAluGYzgEe": {
+    "defaultMessage": "垂直镜像: [开启]",
+    "description": "Button text when vertical flip is enabled"
+  },
+  "nVfvcOHxDm": {
+    "defaultMessage": "垂直镜像",
+    "description": "Button text when vertical flip is disabled"
+  },
+  "NWtwXg/gEc": {
+    "defaultMessage": "垂直翻转",
+    "description": "Tooltip for vertical flip button"
+  },
+  "G+OhmN1Z2q": {
+    "defaultMessage": "水平镜像: [开启]",
+    "description": "Button text when horizontal flip is enabled"
+  },
+  "By5UnRiMrp": {
+    "defaultMessage": "水平镜像",
+    "description": "Button text when horizontal flip is disabled"
+  },
+  "c2EaBoxVNK": {
+    "defaultMessage": "水平翻转",
+    "description": "Tooltip for horizontal flip button"
+  },
+  "KKP/z+ZE/+": {
+    "defaultMessage": "(角度: {angle}°)",
+    "description": "Current rotation angle indicator"
+  },
+  "UZ7Xb5vdB1": {
+    "defaultMessage": "已更新 #{index}: {duration}秒, 旋转 {rotation}°, 缩放 {zoom}%, 偏移 ({x}, {y})",
+    "description": "Status message when item transform parameters are modified"
+  },
+  "Z7gWaLeZWH": {
+    "defaultMessage": "ℹ 在左侧播放列表中选择一个项目以配置时长、旋转和缩放",
+    "description": "Empty state hint when no playlist item is selected"
+  },
+  "Zy7X5sEFgV": {
+    "defaultMessage": "未找到合适的图形适配器 (DirectX/Vulkan/OpenGL)",
+    "description": "Error when no supported GPU adapter is found"
+  },
+  "RtOKF1JpwY": {
+    "defaultMessage": "Fan Software — 3D全息LED风扇控制器",
+    "description": "Main application window title"
+  },
+  "hfPt34XPYE": {
+    "defaultMessage": "启动图形界面失败: {error}",
+    "description": "Error message when eframe native window fails to launch"
+  },
+  "8+yG+OX3JB": {
+    "defaultMessage": "出厂默认文件已成功创建: {path}",
+    "description": "CLI message when factory default container is created"
+  },
+  "QBaUxbgXog": {
+    "defaultMessage": "容器 .bin 已成功创建: {path}",
+    "description": "CLI message when standard container is created"
+  },
+  "L5I14E1Ygg": {
+    "defaultMessage": "无法打开文件: {path}",
+    "description": "CLI error when input file cannot be opened"
+  },
+  "WsH2gmXLIm": {
+    "defaultMessage": "无法创建输出目录: {path}",
+    "description": "CLI error when output directory creation fails"
+  },
+  "vTiXINsmtl": {
+    "defaultMessage": "正在解包标准容器 ({frames} 帧)...",
+    "description": "CLI message when unpacking standard container begins"
+  },
+  "PBK6UWCHmj": {
+    "defaultMessage": "已成功提取 {frames} 帧至 {path}",
+    "description": "CLI message when frames extraction succeeds"
+  },
+  "3mHAbhe7So": {
+    "defaultMessage": "文件 {path} 不是可识别的全息风扇容器",
+    "description": "CLI error when input file is not a valid container"
+  },
+  "hWXnRCSBoV": {
+    "defaultMessage": "无法打开图像: {path}",
+    "description": "CLI error when image cannot be opened"
+  },
+  "H9LNrDOQ4N": {
+    "defaultMessage": "无法保存预览: {path}",
+    "description": "CLI error when preview image cannot be saved"
+  },
+  "szTZWWBTdU": {
+    "defaultMessage": "转换完成: {input} -> {output}",
+    "description": "CLI message when image conversion completes"
+  },
+  "avXY/nHKTH": {
+    "defaultMessage": "正在搜索风扇设备 (VID: {vid}, PID: {pid})...",
+    "description": "CLI message when scanning for USB HID device"
+  },
+  "geN0R6ej2M": {
+    "defaultMessage": "设备已成功检测并连接！",
+    "description": "CLI message when fan device is connected"
+  },
+  "DR9O/3oBvS": {
+    "defaultMessage": "正在连接到风扇...",
+    "description": "CLI message when dump connection starts"
+  },
+  "vyWfAocxCX": {
+    "defaultMessage": "无法保存转储到 {path}",
+    "description": "CLI error when saving device dump fails"
+  },
+  "fA//afIY7f": {
+    "defaultMessage": "转储成功保存: {path} ({bytes} 字节)",
+    "description": "CLI message when device dump is saved"
+  },
+  "UNKZd9F2n0": {
+    "defaultMessage": "=== 文件信息 ===",
+    "description": "CLI section header for file info"
+  },
+  "NY2JGX3Gvw": {
+    "defaultMessage": "路径: {path}",
+    "description": "CLI info showing file path"
+  },
+  "TWwazR9zez": {
+    "defaultMessage": "大小: {bytes} 字节",
+    "description": "CLI info showing file size in bytes"
+  },
+  "F1GVSEU6rQ": {
+    "defaultMessage": "格式: 全息风扇容器 (112 个径向 LED, 450 条扫描线)",
+    "description": "CLI info describing verified container format"
+  },
+  "dYI7FDfFz2": {
+    "defaultMessage": "头部签名: 有效 (00 11 22 33 44 55 66 77)",
+    "description": "CLI info validating header signature"
+  },
+  "Lt6bZPECZf": {
+    "defaultMessage": "播放列表签名: 有效 (77 66 55 44 33 22 11 00)",
+    "description": "CLI info validating playlist signature"
+  },
+  "Pan6RwQQGp": {
+    "defaultMessage": "总帧数: {frames}",
+    "description": "CLI info displaying total container frames"
+  },
+  "0Rzkuzfljq": {
+    "defaultMessage": "单帧大小: {bytes} 字节",
+    "description": "CLI info displaying single frame size in bytes"
+  },
+  "bBP1yeOb96": {
+    "defaultMessage": "播放列表项数: {count}",
+    "description": "CLI info displaying count of playlist entries"
+  },
+  "8nx+AVjSgg": {
+    "defaultMessage": "  条目 #{idx}: 帧 {start}..{end} (共: {total}), 速度: {speed}, 模式: {mode}",
+    "description": "CLI info describing single playlist entry"
+  },
+  "HekneEJKqj": {
+    "defaultMessage": "完整性: 结构完全有效。",
+    "description": "CLI info confirming container integrity"
+  },
+  "91+KopVAaH": {
+    "defaultMessage": "格式: 未知二进制文件",
+    "description": "CLI info when binary format is unknown"
+  },
+  "F0+an+jd+S": {
+    "defaultMessage": "文件不符合全息风扇容器格式",
+    "description": "CLI error when file format is unrecognized"
+  },
+  "UD7wIoeTv7": {
+    "defaultMessage": "已成功准备帧: {count}",
+    "description": "CLI info showing prepared frames count during creation"
+  },
+  "m3ZdvxovWz": {
+    "defaultMessage": "在目录 {path} 中未找到合适的图像",
+    "description": "CLI error when image directory has no supported files"
+  }
+}

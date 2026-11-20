@@ -1,0 +1,9 @@
+{
+  "source": "en",
+  "fallback": "en",
+  "locales": [
+    { "tag": "en", "name": "English", "flag": "🇬🇧" },
+    { "tag": "ru", "name": "Русский", "flag": "🇷🇺" },
+    { "tag": "zh", "name": "中文", "flag": "🇨🇳" }
+  ]
+}

@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Background Gradient: Deep Slate Obsidian -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#030712"/>
+    </linearGradient>
+
+    <!-- Border: Subtle Platinum & Slate -->
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#1E293B" stop-opacity="0.6"/>
+    </linearGradient>
+
+    <!-- Arctic Hologram Beam -->
+    <linearGradient id="hBeam" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="50%" stop-color="#E0F2FE"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+
+    <!-- Pillar Gradient -->
+    <linearGradient id="pillarLeft" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#0369A1"/>
+    </linearGradient>
+
+    <linearGradient id="pillarRight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0284C7"/>
+      <stop offset="100%" stop-color="#0C4A6E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Squircle Base -->
+  <rect x="24" y="24" width="464" height="464" rx="112" fill="url(#bgGrad)" stroke="url(#borderGrad)" stroke-width="4"/>
+
+  <!-- Optical Circular Hologram Ring (Subtle & Elegant) -->
+  <circle cx="256" cy="256" r="180" fill="none" stroke="#1E293B" stroke-width="6"/>
+  <circle cx="256" cy="256" r="180" fill="none" stroke="#38BDF8" stroke-width="6"
+          stroke-linecap="round" stroke-dasharray="160 50 240 60" opacity="0.6"/>
+
+  <!-- Inner Polar Calibration Tick Marks -->
+  <circle cx="256" cy="256" r="148" fill="none" stroke="#334155" stroke-width="2" stroke-dasharray="4 20" opacity="0.5"/>
+
+  <!-- Central "H" Monogram Geometry -->
+  <g transform="translate(256, 256)">
+    <!-- Left Pillar of H -->
+    <path d="M -88, -130 L -42, -130 L -42, 130 L -88, 130 Z" rx="14" fill="url(#pillarLeft)"/>
+    <!-- Right Pillar of H -->
+    <path d="M 42, -130 L 88, -130 L 88, 130 L 42, 130 Z" rx="14" fill="url(#pillarRight)"/>
+    <!-- Center Holographic Light Beam Bridge -->
+    <rect x="-42" y="-24" width="84" height="48" fill="url(#hBeam)"/>
+
+    <!-- Optical Central Focus Dot (Photon Core) -->
+    <circle cx="0" cy="0" r="10" fill="#FFFFFF"/>
+    <circle cx="0" cy="0" r="5" fill="#38BDF8"/>
+  </g>
+</svg>

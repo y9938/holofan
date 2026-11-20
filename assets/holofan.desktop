@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=HoloFan
+Comment=3D LED Holographic Fan Display Manager
+Exec=holofan
+Icon=holofan
+Terminal=false
+Type=Application
+Categories=Graphics;Multimedia;Video;
+Keywords=hologram;led;fan;pov;display;

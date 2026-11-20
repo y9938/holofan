@@ -1,0 +1,16 @@
+/*
+!/.gitignore
+!/Cargo.lock
+!/Cargo.toml
+!/LICENSE
+!/README.md
+!/build.rs
+!/locales.json
+!/assets/
+!/locales/
+!/scripts/
+!/src/
+!/tests/
+!/vendor/
+!/vendor/jpeg8c/
+!/vendor/jpeg8c/**

@@ -1,0 +1,558 @@
+{
+  "item-controller-speed": {
+    "defaultMessage": "Controller speed:",
+    "description": "Label for per-item controller playback speed"
+  },
+  "kQS+8Blk4a": {
+    "defaultMessage": "Ready. Add an image, GIF, WebP, or open a container file (.bin).",
+    "description": "Initial status bar message on application startup"
+  },
+  "E7FVzJJt/s": {
+    "defaultMessage": "Device not connected",
+    "description": "Device status when fan is not connected via USB HID"
+  },
+  "53mtQ9AJKD": {
+    "defaultMessage": "New Project",
+    "description": "Default project title"
+  },
+  "c1UsWg4T0w": {
+    "defaultMessage": "File loaded: {title} (frames: {frames}, items: {items})",
+    "description": "Status message after loading a binary container file"
+  },
+  "l9SEvwP5zA": {
+    "defaultMessage": "Added \"{filename}\": {duration} s (+{frames} frames). Total in project: {total_duration} s",
+    "description": "Status message after adding a media file to the playlist"
+  },
+  "7nZkzd7ccn": {
+    "defaultMessage": "✅ Successfully written to SD/USB: {target} (frames: {frames})",
+    "description": "Status message when project is saved to removable media"
+  },
+  "hg4xJ33y3l": {
+    "defaultMessage": "❌ Error writing to disk: {error}",
+    "description": "Status message when writing to removable media fails"
+  },
+  "55g2yD++Nd": {
+    "defaultMessage": "❌ Project preparation error: {error}",
+    "description": "Status message when container export preparation fails"
+  },
+  "G6Ig6kcUTS": {
+    "defaultMessage": "Error opening {path}: {error}",
+    "description": "Status message on failed drag-and-drop bin open"
+  },
+  "9rOUKvBHvX": {
+    "defaultMessage": "Error adding {path}: {error}",
+    "description": "Status message on failed drag-and-drop media add"
+  },
+  "kGGqtc4j8C": {
+    "defaultMessage": "➕ Add media (PNG/JPG/GIF/WebP)",
+    "description": "Button to open file picker for images or animations"
+  },
+  "jX6AvrfoC8": {
+    "defaultMessage": "Images and animations",
+    "description": "File filter name for media files"
+  },
+  "ENcK8Dp12O": {
+    "defaultMessage": "Error adding: {error}",
+    "description": "Status message when adding media file from dialog fails"
+  },
+  "kQedZdeygE": {
+    "defaultMessage": "📂 Open .bin",
+    "description": "Button to open existing .bin container file"
+  },
+  "r4/+pd8Ysw": {
+    "defaultMessage": "Hologram fan files (*.bin)",
+    "description": "File filter name for .bin containers"
+  },
+  "5DCddiFqBS": {
+    "defaultMessage": "Error reading .bin: {error}",
+    "description": "Status message when opening .bin fails"
+  },
+  "ObslHDmnat": {
+    "defaultMessage": "💾 Save .bin...",
+    "description": "Button to save container with custom filename"
+  },
+  "HDOPjyrOX1": {
+    "defaultMessage": "Hologram fan file (*.bin)",
+    "description": "File filter name for saving .bin container"
+  },
+  "QG+p6rf4bk": {
+    "defaultMessage": "✅ File saved successfully: {path}",
+    "description": "Status message when container is saved successfully"
+  },
+  "LISHSbFF27": {
+    "defaultMessage": "❌ Save error: {error}",
+    "description": "Status message when saving container fails"
+  },
+  "jWty8cTPbX": {
+    "defaultMessage": "Error: {error}",
+    "description": "Generic error status message"
+  },
+  "7HfB/G5Xgd": {
+    "defaultMessage": "File name:",
+    "description": "Label for the output filename text input"
+  },
+  "C5hVMdQOIP": {
+    "defaultMessage": "⚡ Write to \"{drive}\"",
+    "description": "Button to write project to detected removable drive"
+  },
+  "0KydTo/E+B": {
+    "defaultMessage": "⚡ Write to SD card...",
+    "description": "Button to select SD card root and save project"
+  },
+  "sAzHQ3vREU": {
+    "defaultMessage": "Select SD card root directory",
+    "description": "Title of directory picker dialog for SD card export"
+  },
+  "FEqvEHCfLK": {
+    "defaultMessage": "🖼 Export frames to PNG",
+    "description": "Button to export polar frames as PNG images"
+  },
+  "SjLyTukcub": {
+    "defaultMessage": "No frames to export!",
+    "description": "Status message when PNG export has no frames"
+  },
+  "6d+zh/ZGg6": {
+    "defaultMessage": "✅ Exported {count} frames to {path}",
+    "description": "Status message on successful PNG export"
+  },
+  "1M3T78nizM": {
+    "defaultMessage": "❌ Export error: {error}",
+    "description": "Status message when PNG export fails"
+  },
+  "K2VF713dXp": {
+    "defaultMessage": "🔌 HID connect",
+    "description": "Button to test USB HID connection with fan device"
+  },
+  "kZHoI0vtku": {
+    "defaultMessage": "Connected (VID: 0x0483, PID: 0x5750)",
+    "description": "Device status label when USB HID device is connected"
+  },
+  "jBiCKXqcqp": {
+    "defaultMessage": "Hologram fan detected via USB HID and ready for commands.",
+    "description": "Status message when fan device responds to status query"
+  },
+  "9qy9ywbJVX": {
+    "defaultMessage": "Reply: {error}",
+    "description": "Device status when HID query returns an error"
+  },
+  "+hSjMvDnDt": {
+    "defaultMessage": "Not connected",
+    "description": "Device status when USB HID connection fails"
+  },
+  "3Q2S73FQnA": {
+    "defaultMessage": "USB status: {error}",
+    "description": "Status message reporting USB connection error"
+  },
+  "yKBlcjhwlW": {
+    "defaultMessage": "Status: {message}",
+    "description": "Status bar prefix for general status messages"
+  },
+  "SrY9oEXlF1": {
+    "defaultMessage": "Removable drives: none detected",
+    "description": "Status bar message when no removable drives are found"
+  },
+  "Fo2SzW87Vn": {
+    "defaultMessage": "Removable drive: {path}",
+    "description": "Status bar message showing first detected removable drive"
+  },
+  "1lbL+z8Ej2": {
+    "defaultMessage": "USB HID: {status}",
+    "description": "Status bar prefix for USB HID hardware status"
+  },
+  "CvsdvQl4i2": {
+    "defaultMessage": "📋 Project playlist",
+    "description": "Heading for playlist management section"
+  },
+  "UCPHDqKxIM": {
+    "defaultMessage": "Total: {items} items | ⏱ {duration} s ({frames} frames)",
+    "description": "Playlist summary displaying total items, duration, and frame count"
+  },
+  "yqI9rC1UGO": {
+    "defaultMessage": "#",
+    "description": "Column header: row number"
+  },
+  "Hhcg202NmT": {
+    "defaultMessage": "File name",
+    "description": "Column header: media file name"
+  },
+  "XrRHtIHUlp": {
+    "defaultMessage": "Duration",
+    "description": "Column header: item duration in seconds"
+  },
+  "dwBGgeuEmS": {
+    "defaultMessage": "Frames",
+    "description": "Column header: frame range and count"
+  },
+  "Uc0Q+zi1p7": {
+    "defaultMessage": "Rotation",
+    "description": "Column header: rotation angle in degrees"
+  },
+  "nkGYwoSEb4": {
+    "defaultMessage": "{seconds} s",
+    "description": "Seconds abbreviation in playlist table"
+  },
+  "xNkrCvruuU": {
+    "defaultMessage": "Delete",
+    "description": "Button to delete selected playlist item"
+  },
+  "fg1CjuFlbR": {
+    "defaultMessage": "Item removed from playlist",
+    "description": "Status message when an item is deleted"
+  },
+  "2Z1F9G+Vti": {
+    "defaultMessage": "Up",
+    "description": "Button to move selected playlist item up"
+  },
+  "69RDH/9G83": {
+    "defaultMessage": "Down",
+    "description": "Button to move selected playlist item down"
+  },
+  "+mdItT3d2d": {
+    "defaultMessage": "Clear all",
+    "description": "Button to clear all playlist items"
+  },
+  "YariWiidXA": {
+    "defaultMessage": "Playlist cleared completely",
+    "description": "Status message when entire playlist is cleared"
+  },
+  "9eUNvMvjnj": {
+    "defaultMessage": "112 radial LEDs · 450 angular lines · 114,688 bytes per frame",
+    "description": "Verified controller geometry and encoded frame size"
+  },
+  "4CvH9aqo0L": {
+    "defaultMessage": "🌀 POV display preview",
+    "description": "Heading for circular POV display preview area"
+  },
+  "jYfjW9CF1d": {
+    "defaultMessage": "No frames to display\nAdd media files or a .bin file",
+    "description": "Placeholder text inside empty preview circle"
+  },
+  "ysaHMOXJmm": {
+    "defaultMessage": "▶ Play",
+    "description": "Button to start animation playback"
+  },
+  "sBSOpnhaQC": {
+    "defaultMessage": "⏸ Pause",
+    "description": "Button to pause animation playback"
+  },
+  "31TyLNOENW": {
+    "defaultMessage": "FPS:",
+    "description": "Label for playback speed slider"
+  },
+  "nKknfsG4QU": {
+    "defaultMessage": "Frame:",
+    "description": "Label for current frame number slider"
+  },
+  "5uC8WNZjem": {
+    "defaultMessage": "of {total} ({time} s)",
+    "description": "Frame progress indicator showing total frames and timestamp"
+  },
+  "mMhhcJv3lr": {
+    "defaultMessage": "🛠 Item #{index} settings: \"{title}\"",
+    "description": "Heading for media item transform inspector"
+  },
+  "0Co968QV9T": {
+    "defaultMessage": "⏱ Duration:",
+    "description": "Label for item display duration controls"
+  },
+  "rzo86PTGOu": {
+    "defaultMessage": "- 0.5s",
+    "description": "Button to decrease item duration by 0.5 seconds"
+  },
+  "vThzy9Ppz5": {
+    "defaultMessage": " sec",
+    "description": "Suffix for duration drag value"
+  },
+  "p3CfNrVI1V": {
+    "defaultMessage": "+ 0.5s",
+    "description": "Button to increase item duration by 0.5 seconds"
+  },
+  "H0yRpP467y": {
+    "defaultMessage": "Presets:",
+    "description": "Label for quick duration preset buttons"
+  },
+  "B3tbQMVjFG": {
+    "defaultMessage": "1s",
+    "description": "Preset button for 1 second duration"
+  },
+  "vMkDquV5ag": {
+    "defaultMessage": "2s",
+    "description": "Preset button for 2 seconds duration"
+  },
+  "oXUTSLGO46": {
+    "defaultMessage": "5s",
+    "description": "Preset button for 5 seconds duration"
+  },
+  "FFSlqGic86": {
+    "defaultMessage": "10s",
+    "description": "Preset button for 10 seconds duration"
+  },
+  "lAkQUZivbt": {
+    "defaultMessage": "Total: {duration} s ({frames} frames, ~{cycles} cycles)",
+    "description": "Item duration summary with cycle calculation for animated media"
+  },
+  "rTdH7RhLnJ": {
+    "defaultMessage": "Total: {duration} s ({frames} frames)",
+    "description": "Item duration summary for static media"
+  },
+  "HrfQ+Hr+NA": {
+    "defaultMessage": "Size:",
+    "description": "Label for media framing mode selection"
+  },
+  "IiET33RuND": {
+    "defaultMessage": "Fit to circle",
+    "description": "Framing mode option to preserve aspect ratio with borders"
+  },
+  "BhLlLcrnvZ": {
+    "defaultMessage": "Fit entirely into circle preserving aspect ratio (black borders, transparent in air)",
+    "description": "Tooltip for Fit to circle option"
+  },
+  "BZrCswOk+a": {
+    "defaultMessage": "Fill circle",
+    "description": "Framing mode option to cover entire circle cropping edges"
+  },
+  "HBE5HHbfnL": {
+    "defaultMessage": "Fill entire circle without borders preserving aspect ratio (excess edges cropped)",
+    "description": "Tooltip for Fill circle option"
+  },
+  "7BQbiC2tDl": {
+    "defaultMessage": "Stretch",
+    "description": "Framing mode option to stretch to 450x450 ignoring aspect ratio"
+  },
+  "xgfO+GMO+c": {
+    "defaultMessage": "Stretch image over full 450x450 circle without preserving aspect ratio",
+    "description": "Tooltip for Stretch option"
+  },
+  "x2NWi/YU3g": {
+    "defaultMessage": "Scale:",
+    "description": "Label for zoom scale controls"
+  },
+  "jaocLXxYho": {
+    "defaultMessage": "- 10%",
+    "description": "Button to decrease zoom scale by 10%"
+  },
+  "HKx+K7g9a0": {
+    "defaultMessage": "+ 10%",
+    "description": "Button to increase zoom scale by 10%"
+  },
+  "sRfJYihXLF": {
+    "defaultMessage": "100%",
+    "description": "Button to reset zoom scale to 100%"
+  },
+  "6KU53mq9bI": {
+    "defaultMessage": "Offset:",
+    "description": "Label for position offset controls"
+  },
+  "tOak+AI1z8": {
+    "defaultMessage": "< Left",
+    "description": "Button to shift image position left"
+  },
+  "ZgtxR576tR": {
+    "defaultMessage": "> Right",
+    "description": "Button to shift image position right"
+  },
+  "UGhtpZgYNl": {
+    "defaultMessage": "^ Up",
+    "description": "Button to shift image position up"
+  },
+  "s1CMb8DVO1": {
+    "defaultMessage": "v Down",
+    "description": "Button to shift image position down"
+  },
+  "zEwKzfsUnD": {
+    "defaultMessage": "Reset (0,0)",
+    "description": "Button to reset position offset to origin"
+  },
+  "vcqQ14kUL9": {
+    "defaultMessage": "Rotation:",
+    "description": "Label for rotation and mirror controls"
+  },
+  "B/MWGahZVp": {
+    "defaultMessage": "-90°",
+    "description": "Button to rotate 90 degrees counter-clockwise"
+  },
+  "xrr3vXaRTK": {
+    "defaultMessage": "Rotate 90 degrees counter-clockwise",
+    "description": "Tooltip for counter-clockwise rotation button"
+  },
+  "doPD4HCzB1": {
+    "defaultMessage": "+90°",
+    "description": "Button to rotate 90 degrees clockwise"
+  },
+  "rqVmI566Iz": {
+    "defaultMessage": "Rotate 90 degrees clockwise",
+    "description": "Tooltip for clockwise rotation button"
+  },
+  "4KwQXqDzZq": {
+    "defaultMessage": "180°",
+    "description": "Button to rotate 180 degrees"
+  },
+  "rAluGYzgEe": {
+    "defaultMessage": "Mirror V: [ON]",
+    "description": "Button text when vertical flip is enabled"
+  },
+  "nVfvcOHxDm": {
+    "defaultMessage": "Mirror V",
+    "description": "Button text when vertical flip is disabled"
+  },
+  "NWtwXg/gEc": {
+    "defaultMessage": "Vertical flip",
+    "description": "Tooltip for vertical flip button"
+  },
+  "G+OhmN1Z2q": {
+    "defaultMessage": "Mirror H: [ON]",
+    "description": "Button text when horizontal flip is enabled"
+  },
+  "By5UnRiMrp": {
+    "defaultMessage": "Mirror H",
+    "description": "Button text when horizontal flip is disabled"
+  },
+  "c2EaBoxVNK": {
+    "defaultMessage": "Horizontal flip",
+    "description": "Tooltip for horizontal flip button"
+  },
+  "KKP/z+ZE/+": {
+    "defaultMessage": "(angle: {angle}°)",
+    "description": "Current rotation angle indicator"
+  },
+  "UZ7Xb5vdB1": {
+    "defaultMessage": "Updated #{index}: {duration} s, rotation {rotation}°, zoom {zoom}%, offset ({x}, {y})",
+    "description": "Status message when item transform parameters are modified"
+  },
+  "Z7gWaLeZWH": {
+    "defaultMessage": "ℹ Select an item in the playlist on the left to configure duration, rotation, and scale",
+    "description": "Empty state hint when no playlist item is selected"
+  },
+  "Zy7X5sEFgV": {
+    "defaultMessage": "No suitable graphics adapter found (DirectX/Vulkan/OpenGL)",
+    "description": "Error when no supported GPU adapter is found"
+  },
+  "RtOKF1JpwY": {
+    "defaultMessage": "Fan Software — 3D Holographic LED Display Controller",
+    "description": "Main application window title"
+  },
+  "hfPt34XPYE": {
+    "defaultMessage": "Failed to launch GUI: {error}",
+    "description": "Error message when eframe native window fails to launch"
+  },
+  "8+yG+OX3JB": {
+    "defaultMessage": "Factory default file successfully created: {path}",
+    "description": "CLI message when factory default container is created"
+  },
+  "QBaUxbgXog": {
+    "defaultMessage": "Container .bin successfully created: {path}",
+    "description": "CLI message when standard container is created"
+  },
+  "L5I14E1Ygg": {
+    "defaultMessage": "Failed to open file: {path}",
+    "description": "CLI error when input file cannot be opened"
+  },
+  "WsH2gmXLIm": {
+    "defaultMessage": "Failed to create output directory: {path}",
+    "description": "CLI error when output directory creation fails"
+  },
+  "vTiXINsmtl": {
+    "defaultMessage": "Unpacking standard container ({frames} frames)...",
+    "description": "CLI message when unpacking standard container begins"
+  },
+  "PBK6UWCHmj": {
+    "defaultMessage": "Successfully extracted {frames} frames to {path}",
+    "description": "CLI message when frames extraction succeeds"
+  },
+  "3mHAbhe7So": {
+    "defaultMessage": "File {path} is not a recognized holographic fan container",
+    "description": "CLI error when input file is not a valid container"
+  },
+  "hWXnRCSBoV": {
+    "defaultMessage": "Failed to open image: {path}",
+    "description": "CLI error when image cannot be opened"
+  },
+  "H9LNrDOQ4N": {
+    "defaultMessage": "Failed to save preview: {path}",
+    "description": "CLI error when preview image cannot be saved"
+  },
+  "szTZWWBTdU": {
+    "defaultMessage": "Conversion complete: {input} -> {output}",
+    "description": "CLI message when image conversion completes"
+  },
+  "avXY/nHKTH": {
+    "defaultMessage": "Searching for fan device (VID: {vid}, PID: {pid})...",
+    "description": "CLI message when scanning for USB HID device"
+  },
+  "geN0R6ej2M": {
+    "defaultMessage": "Device successfully detected and connected!",
+    "description": "CLI message when fan device is connected"
+  },
+  "DR9O/3oBvS": {
+    "defaultMessage": "Connecting to fan...",
+    "description": "CLI message when dump connection starts"
+  },
+  "vyWfAocxCX": {
+    "defaultMessage": "Failed to save dump to {path}",
+    "description": "CLI error when saving device dump fails"
+  },
+  "fA//afIY7f": {
+    "defaultMessage": "Dump successfully saved: {path} ({bytes} bytes)",
+    "description": "CLI message when device dump is saved"
+  },
+  "UNKZd9F2n0": {
+    "defaultMessage": "=== File Information ===",
+    "description": "CLI section header for file info"
+  },
+  "NY2JGX3Gvw": {
+    "defaultMessage": "Path: {path}",
+    "description": "CLI info showing file path"
+  },
+  "TWwazR9zez": {
+    "defaultMessage": "Size: {bytes} bytes",
+    "description": "CLI info showing file size in bytes"
+  },
+  "F1GVSEU6rQ": {
+    "defaultMessage": "Format: Holographic fan container (112 radial LEDs, 450 lines)",
+    "description": "CLI info describing verified container format"
+  },
+  "dYI7FDfFz2": {
+    "defaultMessage": "Header signature: valid (00 11 22 33 44 55 66 77)",
+    "description": "CLI info validating header signature"
+  },
+  "Lt6bZPECZf": {
+    "defaultMessage": "Playlist signature: valid (77 66 55 44 33 22 11 00)",
+    "description": "CLI info validating playlist signature"
+  },
+  "Pan6RwQQGp": {
+    "defaultMessage": "Total frames: {frames}",
+    "description": "CLI info displaying total container frames"
+  },
+  "0Rzkuzfljq": {
+    "defaultMessage": "Frame size: {bytes} bytes",
+    "description": "CLI info displaying single frame size in bytes"
+  },
+  "bBP1yeOb96": {
+    "defaultMessage": "Playlist entries: {count}",
+    "description": "CLI info displaying count of playlist entries"
+  },
+  "8nx+AVjSgg": {
+    "defaultMessage": "  Entry #{idx}: frames {start}..{end} (total: {total}), speed: {speed}, mode: {mode}",
+    "description": "CLI info describing single playlist entry"
+  },
+  "HekneEJKqj": {
+    "defaultMessage": "Integrity: structure is fully valid.",
+    "description": "CLI info confirming container integrity"
+  },
+  "91+KopVAaH": {
+    "defaultMessage": "Format: unrecognized binary file",
+    "description": "CLI info when binary format is unknown"
+  },
+  "F0+an+jd+S": {
+    "defaultMessage": "File does not match holographic fan container format",
+    "description": "CLI error when file format is unrecognized"
+  },
+  "UD7wIoeTv7": {
+    "defaultMessage": "Successfully prepared frames: {count}",
+    "description": "CLI info showing prepared frames count during creation"
+  },
+  "m3ZdvxovWz": {
+    "defaultMessage": "No suitable images found in directory {path}",
+    "description": "CLI error when image directory has no supported files"
+  }
+}

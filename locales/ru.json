@@ -1,0 +1,558 @@
+{
+  "item-controller-speed": {
+    "defaultMessage": "Скорость контроллера:",
+    "description": "Label for per-item controller playback speed"
+  },
+  "kQS+8Blk4a": {
+    "defaultMessage": "Готово к работе. Добавьте изображение, GIF, WebP или откройте файл контейнера (.bin).",
+    "description": "Initial status bar message on application startup"
+  },
+  "E7FVzJJt/s": {
+    "defaultMessage": "Устройство не подключено",
+    "description": "Device status when fan is not connected via USB HID"
+  },
+  "53mtQ9AJKD": {
+    "defaultMessage": "Новый проект",
+    "description": "Default project title"
+  },
+  "c1UsWg4T0w": {
+    "defaultMessage": "Успешно загружен файл: {title} (кадров: {frames}, элементов: {items})",
+    "description": "Status message after loading a binary container file"
+  },
+  "l9SEvwP5zA": {
+    "defaultMessage": "Добавлен «{filename}»: {duration} сек (+{frames} кадров). Всего в проекте: {total_duration} сек",
+    "description": "Status message after adding a media file to the playlist"
+  },
+  "7nZkzd7ccn": {
+    "defaultMessage": "✅ Успешно записано на SD/USB: {target} (кадров: {frames})",
+    "description": "Status message when project is saved to removable media"
+  },
+  "hg4xJ33y3l": {
+    "defaultMessage": "❌ Ошибка записи на диск: {error}",
+    "description": "Status message when writing to removable media fails"
+  },
+  "55g2yD++Nd": {
+    "defaultMessage": "❌ Ошибка подготовки проекта: {error}",
+    "description": "Status message when container export preparation fails"
+  },
+  "G6Ig6kcUTS": {
+    "defaultMessage": "Ошибка открытия {path}: {error}",
+    "description": "Status message on failed drag-and-drop bin open"
+  },
+  "9rOUKvBHvX": {
+    "defaultMessage": "Ошибка добавления {path}: {error}",
+    "description": "Status message on failed drag-and-drop media add"
+  },
+  "kGGqtc4j8C": {
+    "defaultMessage": "➕ Добавить медиа (PNG/JPG/GIF/WebP)",
+    "description": "Button to open file picker for images or animations"
+  },
+  "jX6AvrfoC8": {
+    "defaultMessage": "Изображения и анимации",
+    "description": "File filter name for media files"
+  },
+  "ENcK8Dp12O": {
+    "defaultMessage": "Ошибка добавления: {error}",
+    "description": "Status message when adding media file from dialog fails"
+  },
+  "kQedZdeygE": {
+    "defaultMessage": "📂 Открыть .bin",
+    "description": "Button to open existing .bin container file"
+  },
+  "r4/+pd8Ysw": {
+    "defaultMessage": "Файлы вентилятора (*.bin)",
+    "description": "File filter name for .bin containers"
+  },
+  "5DCddiFqBS": {
+    "defaultMessage": "Ошибка чтения .bin: {error}",
+    "description": "Status message when opening .bin fails"
+  },
+  "ObslHDmnat": {
+    "defaultMessage": "💾 Сохранить .bin...",
+    "description": "Button to save container with custom filename"
+  },
+  "HDOPjyrOX1": {
+    "defaultMessage": "Файл вентилятора (*.bin)",
+    "description": "File filter name for saving .bin container"
+  },
+  "QG+p6rf4bk": {
+    "defaultMessage": "✅ Файл успешно сохранен: {path}",
+    "description": "Status message when container is saved successfully"
+  },
+  "LISHSbFF27": {
+    "defaultMessage": "❌ Ошибка сохранения: {error}",
+    "description": "Status message when saving container fails"
+  },
+  "jWty8cTPbX": {
+    "defaultMessage": "Ошибка: {error}",
+    "description": "Generic error status message"
+  },
+  "7HfB/G5Xgd": {
+    "defaultMessage": "Имя файла:",
+    "description": "Label for the output filename text input"
+  },
+  "C5hVMdQOIP": {
+    "defaultMessage": "⚡ Записать на «{drive}»",
+    "description": "Button to write project to detected removable drive"
+  },
+  "0KydTo/E+B": {
+    "defaultMessage": "⚡ Записать на SD-карту...",
+    "description": "Button to select SD card root and save project"
+  },
+  "sAzHQ3vREU": {
+    "defaultMessage": "Выберите корень SD-карты",
+    "description": "Title of directory picker dialog for SD card export"
+  },
+  "FEqvEHCfLK": {
+    "defaultMessage": "🖼 Экспорт кадров в PNG",
+    "description": "Button to export polar frames as PNG images"
+  },
+  "SjLyTukcub": {
+    "defaultMessage": "Нет кадров для экспорта!",
+    "description": "Status message when PNG export has no frames"
+  },
+  "6d+zh/ZGg6": {
+    "defaultMessage": "✅ Экспортировано {count} кадров в {path}",
+    "description": "Status message on successful PNG export"
+  },
+  "1M3T78nizM": {
+    "defaultMessage": "❌ Ошибка экспорта: {error}",
+    "description": "Status message when PNG export fails"
+  },
+  "K2VF713dXp": {
+    "defaultMessage": "🔌 Связь HID",
+    "description": "Button to test USB HID connection with fan device"
+  },
+  "kZHoI0vtku": {
+    "defaultMessage": "Подключено (VID: 0x0483, PID: 0x5750)",
+    "description": "Device status label when USB HID device is connected"
+  },
+  "jBiCKXqcqp": {
+    "defaultMessage": "Вентилятор обнаружен по USB HID и готов к командам.",
+    "description": "Status message when fan device responds to status query"
+  },
+  "9qy9ywbJVX": {
+    "defaultMessage": "Ответ: {error}",
+    "description": "Device status when HID query returns an error"
+  },
+  "+hSjMvDnDt": {
+    "defaultMessage": "Не подключено",
+    "description": "Device status when USB HID connection fails"
+  },
+  "3Q2S73FQnA": {
+    "defaultMessage": "USB статус: {error}",
+    "description": "Status message reporting USB connection error"
+  },
+  "yKBlcjhwlW": {
+    "defaultMessage": "Статус: {message}",
+    "description": "Status bar prefix for general status messages"
+  },
+  "SrY9oEXlF1": {
+    "defaultMessage": "Съемные накопители: не обнаружены",
+    "description": "Status bar message when no removable drives are found"
+  },
+  "Fo2SzW87Vn": {
+    "defaultMessage": "Съемный накопитель: {path}",
+    "description": "Status bar message showing first detected removable drive"
+  },
+  "1lbL+z8Ej2": {
+    "defaultMessage": "USB HID: {status}",
+    "description": "Status bar prefix for USB HID hardware status"
+  },
+  "CvsdvQl4i2": {
+    "defaultMessage": "📋 Плейлист проекта",
+    "description": "Heading for playlist management section"
+  },
+  "UCPHDqKxIM": {
+    "defaultMessage": "Всего: {items} элементов | ⏱ {duration} сек ({frames} кадров)",
+    "description": "Playlist summary displaying total items, duration, and frame count"
+  },
+  "yqI9rC1UGO": {
+    "defaultMessage": "№",
+    "description": "Column header: row number"
+  },
+  "Hhcg202NmT": {
+    "defaultMessage": "Имя файла",
+    "description": "Column header: media file name"
+  },
+  "XrRHtIHUlp": {
+    "defaultMessage": "Длительность",
+    "description": "Column header: item duration in seconds"
+  },
+  "dwBGgeuEmS": {
+    "defaultMessage": "Кадры",
+    "description": "Column header: frame range and count"
+  },
+  "Uc0Q+zi1p7": {
+    "defaultMessage": "Поворот",
+    "description": "Column header: rotation angle in degrees"
+  },
+  "nkGYwoSEb4": {
+    "defaultMessage": "{seconds} с",
+    "description": "Seconds abbreviation in playlist table"
+  },
+  "xNkrCvruuU": {
+    "defaultMessage": "Удалить",
+    "description": "Button to delete selected playlist item"
+  },
+  "fg1CjuFlbR": {
+    "defaultMessage": "Элемент удален из плейлиста",
+    "description": "Status message when an item is deleted"
+  },
+  "2Z1F9G+Vti": {
+    "defaultMessage": "Вверх",
+    "description": "Button to move selected playlist item up"
+  },
+  "69RDH/9G83": {
+    "defaultMessage": "Вниз",
+    "description": "Button to move selected playlist item down"
+  },
+  "+mdItT3d2d": {
+    "defaultMessage": "Очистить всё",
+    "description": "Button to clear all playlist items"
+  },
+  "YariWiidXA": {
+    "defaultMessage": "Плейлист полностью очищен",
+    "description": "Status message when entire playlist is cleared"
+  },
+  "9eUNvMvjnj": {
+    "defaultMessage": "112 радиальных светодиодов · 450 линий · 114 688 байт на кадр",
+    "description": "Verified controller geometry and encoded frame size"
+  },
+  "4CvH9aqo0L": {
+    "defaultMessage": "🌀 Предпросмотр POV-дисплея",
+    "description": "Heading for circular POV display preview area"
+  },
+  "jYfjW9CF1d": {
+    "defaultMessage": "Нет кадров для отображения\nДобавьте медиафайлы или .bin файл",
+    "description": "Placeholder text inside empty preview circle"
+  },
+  "ysaHMOXJmm": {
+    "defaultMessage": "▶ Воспроизведение",
+    "description": "Button to start animation playback"
+  },
+  "sBSOpnhaQC": {
+    "defaultMessage": "⏸ Пауза",
+    "description": "Button to pause animation playback"
+  },
+  "31TyLNOENW": {
+    "defaultMessage": "FPS:",
+    "description": "Label for playback speed slider"
+  },
+  "nKknfsG4QU": {
+    "defaultMessage": "Кадр:",
+    "description": "Label for current frame number slider"
+  },
+  "5uC8WNZjem": {
+    "defaultMessage": "из {total} ({time} с)",
+    "description": "Frame progress indicator showing total frames and timestamp"
+  },
+  "mMhhcJv3lr": {
+    "defaultMessage": "🛠 Настройки элемента #{index}: «{title}»",
+    "description": "Heading for media item transform inspector"
+  },
+  "0Co968QV9T": {
+    "defaultMessage": "⏱ Длительность:",
+    "description": "Label for item display duration controls"
+  },
+  "rzo86PTGOu": {
+    "defaultMessage": "- 0.5с",
+    "description": "Button to decrease item duration by 0.5 seconds"
+  },
+  "vThzy9Ppz5": {
+    "defaultMessage": " сек",
+    "description": "Suffix for duration drag value"
+  },
+  "p3CfNrVI1V": {
+    "defaultMessage": "+ 0.5с",
+    "description": "Button to increase item duration by 0.5 seconds"
+  },
+  "H0yRpP467y": {
+    "defaultMessage": "Пресеты:",
+    "description": "Label for quick duration preset buttons"
+  },
+  "B3tbQMVjFG": {
+    "defaultMessage": "1с",
+    "description": "Preset button for 1 second duration"
+  },
+  "vMkDquV5ag": {
+    "defaultMessage": "2с",
+    "description": "Preset button for 2 seconds duration"
+  },
+  "oXUTSLGO46": {
+    "defaultMessage": "5с",
+    "description": "Preset button for 5 seconds duration"
+  },
+  "FFSlqGic86": {
+    "defaultMessage": "10с",
+    "description": "Preset button for 10 seconds duration"
+  },
+  "lAkQUZivbt": {
+    "defaultMessage": "Итого: {duration} сек ({frames} кадров, ~{cycles} циклов)",
+    "description": "Item duration summary with cycle calculation for animated media"
+  },
+  "rTdH7RhLnJ": {
+    "defaultMessage": "Итого: {duration} сек ({frames} кадров)",
+    "description": "Item duration summary for static media"
+  },
+  "HrfQ+Hr+NA": {
+    "defaultMessage": "Размер:",
+    "description": "Label for media framing mode selection"
+  },
+  "IiET33RuND": {
+    "defaultMessage": "Вписать в круг",
+    "description": "Framing mode option to preserve aspect ratio with borders"
+  },
+  "BhLlLcrnvZ": {
+    "defaultMessage": "Вписать целиком в круг с сохранением пропорций (поля черные, в воздухе прозрачные)",
+    "description": "Tooltip for Fit to circle option"
+  },
+  "BZrCswOk+a": {
+    "defaultMessage": "Заполнить круг",
+    "description": "Framing mode option to cover entire circle cropping edges"
+  },
+  "HBE5HHbfnL": {
+    "defaultMessage": "Заполнить весь круг без полей с сохранением пропорций (лишние края обрезаются)",
+    "description": "Tooltip for Fill circle option"
+  },
+  "7BQbiC2tDl": {
+    "defaultMessage": "Растянуть",
+    "description": "Framing mode option to stretch to 450x450 ignoring aspect ratio"
+  },
+  "xgfO+GMO+c": {
+    "defaultMessage": "Растянуть изображение на весь круг 450x450 без сохранения пропорций",
+    "description": "Tooltip for Stretch option"
+  },
+  "x2NWi/YU3g": {
+    "defaultMessage": "Масштаб:",
+    "description": "Label for zoom scale controls"
+  },
+  "jaocLXxYho": {
+    "defaultMessage": "- 10%",
+    "description": "Button to decrease zoom scale by 10%"
+  },
+  "HKx+K7g9a0": {
+    "defaultMessage": "+ 10%",
+    "description": "Button to increase zoom scale by 10%"
+  },
+  "sRfJYihXLF": {
+    "defaultMessage": "100%",
+    "description": "Button to reset zoom scale to 100%"
+  },
+  "6KU53mq9bI": {
+    "defaultMessage": "Смещение:",
+    "description": "Label for position offset controls"
+  },
+  "tOak+AI1z8": {
+    "defaultMessage": "< Влево",
+    "description": "Button to shift image position left"
+  },
+  "ZgtxR576tR": {
+    "defaultMessage": "> Вправо",
+    "description": "Button to shift image position right"
+  },
+  "UGhtpZgYNl": {
+    "defaultMessage": "^ Вверх",
+    "description": "Button to shift image position up"
+  },
+  "s1CMb8DVO1": {
+    "defaultMessage": "v Вниз",
+    "description": "Button to shift image position down"
+  },
+  "zEwKzfsUnD": {
+    "defaultMessage": "Сброс (0,0)",
+    "description": "Button to reset position offset to origin"
+  },
+  "vcqQ14kUL9": {
+    "defaultMessage": "Поворот:",
+    "description": "Label for rotation and mirror controls"
+  },
+  "B/MWGahZVp": {
+    "defaultMessage": "-90°",
+    "description": "Button to rotate 90 degrees counter-clockwise"
+  },
+  "xrr3vXaRTK": {
+    "defaultMessage": "Повернуть на 90 градусов против часовой стрелки",
+    "description": "Tooltip for counter-clockwise rotation button"
+  },
+  "doPD4HCzB1": {
+    "defaultMessage": "+90°",
+    "description": "Button to rotate 90 degrees clockwise"
+  },
+  "rqVmI566Iz": {
+    "defaultMessage": "Повернуть на 90 градусов по часовой стрелке",
+    "description": "Tooltip for clockwise rotation button"
+  },
+  "4KwQXqDzZq": {
+    "defaultMessage": "180°",
+    "description": "Button to rotate 180 degrees"
+  },
+  "rAluGYzgEe": {
+    "defaultMessage": "Зеркало В: [ВКЛ]",
+    "description": "Button text when vertical flip is enabled"
+  },
+  "nVfvcOHxDm": {
+    "defaultMessage": "Зеркало В",
+    "description": "Button text when vertical flip is disabled"
+  },
+  "NWtwXg/gEc": {
+    "defaultMessage": "Вертикальное отражение",
+    "description": "Tooltip for vertical flip button"
+  },
+  "G+OhmN1Z2q": {
+    "defaultMessage": "Зеркало Г: [ВКЛ]",
+    "description": "Button text when horizontal flip is enabled"
+  },
+  "By5UnRiMrp": {
+    "defaultMessage": "Зеркало Г",
+    "description": "Button text when horizontal flip is disabled"
+  },
+  "c2EaBoxVNK": {
+    "defaultMessage": "Горизонтальное отражение",
+    "description": "Tooltip for horizontal flip button"
+  },
+  "KKP/z+ZE/+": {
+    "defaultMessage": "(угол: {angle}°)",
+    "description": "Current rotation angle indicator"
+  },
+  "UZ7Xb5vdB1": {
+    "defaultMessage": "Обновлен #{index}: {duration}с, поворот {rotation}°, зум {zoom}%, сдвиг ({x}, {y})",
+    "description": "Status message when item transform parameters are modified"
+  },
+  "Z7gWaLeZWH": {
+    "defaultMessage": "ℹ Выберите элемент в плейлисте слева для настройки длительности, поворота и масштаба",
+    "description": "Empty state hint when no playlist item is selected"
+  },
+  "Zy7X5sEFgV": {
+    "defaultMessage": "Не найден подходящий графический адаптер (DirectX/Vulkan/OpenGL)",
+    "description": "Error when no supported GPU adapter is found"
+  },
+  "RtOKF1JpwY": {
+    "defaultMessage": "Fan Software — Управление 3D голографическим вентилятором",
+    "description": "Main application window title"
+  },
+  "hfPt34XPYE": {
+    "defaultMessage": "Ошибка запуска GUI: {error}",
+    "description": "Error message when eframe native window fails to launch"
+  },
+  "8+yG+OX3JB": {
+    "defaultMessage": "Заводской файл успешно создан: {path}",
+    "description": "CLI message when factory default container is created"
+  },
+  "QBaUxbgXog": {
+    "defaultMessage": "Контейнер .bin успешно создан: {path}",
+    "description": "CLI message when standard container is created"
+  },
+  "L5I14E1Ygg": {
+    "defaultMessage": "Не удалось открыть файл: {path}",
+    "description": "CLI error when input file cannot be opened"
+  },
+  "WsH2gmXLIm": {
+    "defaultMessage": "Не удалось создать каталог вывода: {path}",
+    "description": "CLI error when output directory creation fails"
+  },
+  "vTiXINsmtl": {
+    "defaultMessage": "Распаковка стандартного контейнера ({frames} кадров)...",
+    "description": "CLI message when unpacking standard container begins"
+  },
+  "PBK6UWCHmj": {
+    "defaultMessage": "Успешно извлечено {frames} кадров в {path}",
+    "description": "CLI message when frames extraction succeeds"
+  },
+  "3mHAbhe7So": {
+    "defaultMessage": "Файл {path} не является распознанным контейнером голографического вентилятора",
+    "description": "CLI error when input file is not a valid container"
+  },
+  "hWXnRCSBoV": {
+    "defaultMessage": "Не удалось открыть изображение: {path}",
+    "description": "CLI error when image cannot be opened"
+  },
+  "H9LNrDOQ4N": {
+    "defaultMessage": "Не удалось сохранить предпросмотр: {path}",
+    "description": "CLI error when preview image cannot be saved"
+  },
+  "szTZWWBTdU": {
+    "defaultMessage": "Преобразование завершено: {input} -> {output}",
+    "description": "CLI message when image conversion completes"
+  },
+  "avXY/nHKTH": {
+    "defaultMessage": "Поиск устройства вентилятора (VID: {vid}, PID: {pid})...",
+    "description": "CLI message when scanning for USB HID device"
+  },
+  "geN0R6ej2M": {
+    "defaultMessage": "Устройство успешно обнаружено и подключено!",
+    "description": "CLI message when fan device is connected"
+  },
+  "DR9O/3oBvS": {
+    "defaultMessage": "Подключение к вентилятору...",
+    "description": "CLI message when dump connection starts"
+  },
+  "vyWfAocxCX": {
+    "defaultMessage": "Не удалось сохранить дамп в {path}",
+    "description": "CLI error when saving device dump fails"
+  },
+  "fA//afIY7f": {
+    "defaultMessage": "Дамп успешно сохранён: {path} ({bytes} байт)",
+    "description": "CLI message when device dump is saved"
+  },
+  "UNKZd9F2n0": {
+    "defaultMessage": "=== Информация о файле ===",
+    "description": "CLI section header for file info"
+  },
+  "NY2JGX3Gvw": {
+    "defaultMessage": "Путь: {path}",
+    "description": "CLI info showing file path"
+  },
+  "TWwazR9zez": {
+    "defaultMessage": "Размер: {bytes} байт",
+    "description": "CLI info showing file size in bytes"
+  },
+  "F1GVSEU6rQ": {
+    "defaultMessage": "Формат: контейнер вентилятора (112 радиальных светодиодов, 450 линий)",
+    "description": "CLI info describing verified container format"
+  },
+  "dYI7FDfFz2": {
+    "defaultMessage": "Сигнатура заголовка: корректна (00 11 22 33 44 55 66 77)",
+    "description": "CLI info validating header signature"
+  },
+  "Lt6bZPECZf": {
+    "defaultMessage": "Сигнатура плейлиста: корректна (77 66 55 44 33 22 11 00)",
+    "description": "CLI info validating playlist signature"
+  },
+  "Pan6RwQQGp": {
+    "defaultMessage": "Всего кадров: {frames}",
+    "description": "CLI info displaying total container frames"
+  },
+  "0Rzkuzfljq": {
+    "defaultMessage": "Размер одного кадра: {bytes} байт",
+    "description": "CLI info displaying single frame size in bytes"
+  },
+  "bBP1yeOb96": {
+    "defaultMessage": "Количество записей плейлиста: {count}",
+    "description": "CLI info displaying count of playlist entries"
+  },
+  "8nx+AVjSgg": {
+    "defaultMessage": "  Запись #{idx}: кадры {start}..{end} (всего: {total}), скорость: {speed}, режим: {mode}",
+    "description": "CLI info describing single playlist entry"
+  },
+  "HekneEJKqj": {
+    "defaultMessage": "Целостность: структура полностью валидна.",
+    "description": "CLI info confirming container integrity"
+  },
+  "91+KopVAaH": {
+    "defaultMessage": "Формат: неопознанный двоичный файл",
+    "description": "CLI info when binary format is unknown"
+  },
+  "F0+an+jd+S": {
+    "defaultMessage": "Файл не соответствует формату контейнера голографического вентилятора",
+    "description": "CLI error when file format is unrecognized"
+  },
+  "UD7wIoeTv7": {
+    "defaultMessage": "Успешно подготовлено кадров: {count}",
+    "description": "CLI info showing prepared frames count during creation"
+  },
+  "m3ZdvxovWz": {
+    "defaultMessage": "В каталоге {path} не обнаружено подходящих изображений",
+    "description": "CLI error when image directory has no supported files"
+  }
+}

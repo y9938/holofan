@@ -1,0 +1,6 @@
+pub mod hologram;
+
+pub use hologram::{
+    HologramContainer, PlaylistEntry, HOLOGRAM_FRAME_SIZE, HOLOGRAM_HEADER_MAGIC,
+    HOLOGRAM_HEADER_SIZE, HOLOGRAM_TRAILER_MAGIC,
+};
