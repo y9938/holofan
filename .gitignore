@@ -11,6 +11,8 @@
 !/scripts/
 !/src/
 !/tests/
+!/ui/
+!/ui/**
 !/vendor/
 !/vendor/jpeg8c/
 !/vendor/jpeg8c/**

@@ -9,6 +9,7 @@
 
 use anyhow::{bail, Result};
 use image::{DynamicImage, GenericImageView, ImageBuffer, Rgb, Rgba, RgbaImage};
+use std::sync::OnceLock;
 
 /// One immutable profile describing the verified factory frame format.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
@@ -308,55 +309,40 @@ pub fn decode_polar_to_image(
         bail!("Invalid frame padding: expected zero bytes after active payload");
     }
 
-    // The encoded frame stores discrete LEDs along radial spokes. Scattering
-    // one source sample into one canvas pixel leaves visible gaps between the
-    // 0.8° spokes. Reconstruct the POV image per output pixel instead, blending
-    // the four neighbouring angular/radial LED samples.
-    let mut canvas = ImageBuffer::from_pixel(
-        PolarConfig::IMAGE_SIZE,
-        PolarConfig::IMAGE_SIZE,
-        Rgb([0, 0, 0]),
-    );
+    // Source coordinates are fixed for every frame. Build their angular/radial
+    // sampling map once, then each preview only performs byte reads and blends.
     let samples: Vec<[u8; 3]> = (0..PolarConfig::LINE_COUNT)
         .flat_map(|line| {
             (0..PolarConfig::LED_COUNT).map(move |sample| decode_sample(data, line, sample))
         })
         .collect();
-    for y in 0..PolarConfig::IMAGE_SIZE {
-        for x in 0..PolarConfig::IMAGE_SIZE {
-            let dx = x as f64 - 225.0;
-            let dy = 225.0 - y as f64;
-            let radius = dx.hypot(dy);
-            if radius > 224.0 {
-                continue;
-            }
 
-            let angle = (dy.atan2(dx).to_degrees() - 90.0).rem_euclid(360.0)
-                / (360.0 / PolarConfig::LINE_COUNT as f64);
-            let line0 = angle.floor() as usize;
-            let line1 = (line0 + 1) % PolarConfig::LINE_COUNT;
-            let line_t = angle - line0 as f64;
-
-            let sample = (PolarConfig::LED_COUNT - 1) as f64 * (1.0 - radius / 224.0);
-            let sample0 = sample.floor() as usize;
-            let sample1 = (sample0 + 1).min(PolarConfig::LED_COUNT - 1);
-            let sample_t = sample - sample0 as f64;
-
-            let a = samples[line0 * PolarConfig::LED_COUNT + sample0];
-            let b = samples[line1 * PolarConfig::LED_COUNT + sample0];
-            let c = samples[line0 * PolarConfig::LED_COUNT + sample1];
-            let d = samples[line1 * PolarConfig::LED_COUNT + sample1];
-            let mut rgb = [0; 3];
-            for channel in 0..3 {
-                let radial0 = a[channel] as f64 * (1.0 - line_t) + b[channel] as f64 * line_t;
-                let radial1 = c[channel] as f64 * (1.0 - line_t) + d[channel] as f64 * line_t;
-                rgb[channel] = (radial0 * (1.0 - sample_t) + radial1 * sample_t)
-                    .round()
-                    .clamp(0.0, 255.0) as u8;
-            }
-            canvas.put_pixel(x, y, Rgb(rgb));
+    let mut pixels =
+        vec![0; PolarConfig::IMAGE_SIZE as usize * PolarConfig::IMAGE_SIZE as usize * 3];
+    for (pixel_index, map) in preview_sampling_map().iter().enumerate() {
+        if !map.inside {
+            continue;
         }
+        let [i00, i10, i01, i11] = map.samples;
+        let a = samples[i00];
+        let b = samples[i10];
+        let c = samples[i01];
+        let d = samples[i11];
+        let mut rgb = [0; 3];
+        for channel in 0..3 {
+            let radial0 =
+                a[channel] as f64 * (1.0 - map.angular_t) + b[channel] as f64 * map.angular_t;
+            let radial1 =
+                c[channel] as f64 * (1.0 - map.angular_t) + d[channel] as f64 * map.angular_t;
+            rgb[channel] = (radial0 * (1.0 - map.radial_t) + radial1 * map.radial_t)
+                .round()
+                .clamp(0.0, 255.0) as u8;
+        }
+        let offset = pixel_index * 3;
+        pixels[offset..offset + 3].copy_from_slice(&rgb);
     }
+    let canvas = ImageBuffer::from_raw(PolarConfig::IMAGE_SIZE, PolarConfig::IMAGE_SIZE, pixels)
+        .expect("sampling map always produces a correctly sized preview");
     // Preview decoded frames in the orientation that the fan physically shows.
     let preview = match PolarConfig::DISPLAY_ROTATION_DEG.rem_euclid(360) {
         90 => image::imageops::rotate90(&canvas),
@@ -365,6 +351,61 @@ pub fn decode_polar_to_image(
         _ => canvas,
     };
     Ok(preview)
+}
+
+#[derive(Clone, Copy)]
+struct PreviewSample {
+    samples: [usize; 4],
+    angular_t: f64,
+    radial_t: f64,
+    inside: bool,
+}
+
+fn preview_sampling_map() -> &'static [PreviewSample] {
+    static MAP: OnceLock<Vec<PreviewSample>> = OnceLock::new();
+    MAP.get_or_init(|| {
+        let size = PolarConfig::IMAGE_SIZE as usize;
+        let mut map = Vec::with_capacity(size * size);
+        for y in 0..size {
+            for x in 0..size {
+                let dx = x as f64 - 225.0;
+                let dy = 225.0 - y as f64;
+                let radius = dx.hypot(dy);
+                if radius > 224.0 {
+                    map.push(PreviewSample {
+                        samples: [0; 4],
+                        angular_t: 0.0,
+                        radial_t: 0.0,
+                        inside: false,
+                    });
+                    continue;
+                }
+
+                let angle = (dy.atan2(dx).to_degrees() - 90.0).rem_euclid(360.0)
+                    / (360.0 / PolarConfig::LINE_COUNT as f64);
+                let line0 = angle.floor() as usize;
+                let line1 = (line0 + 1) % PolarConfig::LINE_COUNT;
+                let angular_t = angle - line0 as f64;
+
+                let sample = (PolarConfig::LED_COUNT - 1) as f64 * (1.0 - radius / 224.0);
+                let sample0 = sample.floor() as usize;
+                let sample1 = (sample0 + 1).min(PolarConfig::LED_COUNT - 1);
+                let radial_t = sample - sample0 as f64;
+                map.push(PreviewSample {
+                    samples: [
+                        line0 * PolarConfig::LED_COUNT + sample0,
+                        line1 * PolarConfig::LED_COUNT + sample0,
+                        line0 * PolarConfig::LED_COUNT + sample1,
+                        line1 * PolarConfig::LED_COUNT + sample1,
+                    ],
+                    angular_t,
+                    radial_t,
+                    inside: true,
+                });
+            }
+        }
+        map
+    })
 }
 
 fn decode_sample(data: &[u8], line: usize, sample: usize) -> [u8; 3] {
@@ -467,7 +508,7 @@ mod tests {
     }
 
     #[test]
-    fn decoded_preview_interpolates_between_led_samples() {
+    fn decoded_preview_keeps_reference_pixels_inside_and_outside_the_circle() {
         let config = PolarConfig::standard();
         let source = DynamicImage::ImageRgb8(ImageBuffer::from_pixel(
             PolarConfig::IMAGE_SIZE,
@@ -477,9 +518,77 @@ mod tests {
         let frame = encode_prepared_canvas_to_polar(&source, &config);
         let preview = decode_polar_to_image(&frame, &config).unwrap();
 
-        assert_eq!(preview.get_pixel(225, 1), &Rgb([252, 0, 0]));
-        assert!(preview.get_pixel(226, 2)[0] > 0);
+        let reference = decode_polar_to_image_reference(&frame).unwrap();
+        assert_eq!(preview.get_pixel(225, 1), reference.get_pixel(225, 1));
+        assert_eq!(preview.get_pixel(226, 2), reference.get_pixel(226, 2));
         assert_eq!(preview.get_pixel(0, 0), &Rgb([0, 0, 0]));
+    }
+
+    #[test]
+    fn preview_lookup_is_bit_exact_with_uncached_reconstruction() {
+        let mut frame = vec![0; PolarConfig::FRAME_PADDED_SIZE];
+        for (index, byte) in frame[..PolarConfig::ACTIVE_FRAME_SIZE]
+            .iter_mut()
+            .enumerate()
+        {
+            *byte = (index.wrapping_mul(73).wrapping_add(19) % 256) as u8;
+        }
+        let config = PolarConfig::standard();
+        assert_eq!(
+            decode_polar_to_image(&frame, &config).unwrap(),
+            decode_polar_to_image_reference(&frame).unwrap()
+        );
+    }
+
+    fn decode_polar_to_image_reference(data: &[u8]) -> Result<ImageBuffer<Rgb<u8>, Vec<u8>>> {
+        let mut canvas = ImageBuffer::from_pixel(
+            PolarConfig::IMAGE_SIZE,
+            PolarConfig::IMAGE_SIZE,
+            Rgb([0, 0, 0]),
+        );
+        let samples: Vec<[u8; 3]> = (0..PolarConfig::LINE_COUNT)
+            .flat_map(|line| {
+                (0..PolarConfig::LED_COUNT).map(move |sample| decode_sample(data, line, sample))
+            })
+            .collect();
+        for y in 0..PolarConfig::IMAGE_SIZE {
+            for x in 0..PolarConfig::IMAGE_SIZE {
+                let dx = x as f64 - 225.0;
+                let dy = 225.0 - y as f64;
+                let radius = dx.hypot(dy);
+                if radius > 224.0 {
+                    continue;
+                }
+                let angle = (dy.atan2(dx).to_degrees() - 90.0).rem_euclid(360.0)
+                    / (360.0 / PolarConfig::LINE_COUNT as f64);
+                let line0 = angle.floor() as usize;
+                let line1 = (line0 + 1) % PolarConfig::LINE_COUNT;
+                let line_t = angle - line0 as f64;
+                let sample = (PolarConfig::LED_COUNT - 1) as f64 * (1.0 - radius / 224.0);
+                let sample0 = sample.floor() as usize;
+                let sample1 = (sample0 + 1).min(PolarConfig::LED_COUNT - 1);
+                let sample_t = sample - sample0 as f64;
+                let a = samples[line0 * PolarConfig::LED_COUNT + sample0];
+                let b = samples[line1 * PolarConfig::LED_COUNT + sample0];
+                let c = samples[line0 * PolarConfig::LED_COUNT + sample1];
+                let d = samples[line1 * PolarConfig::LED_COUNT + sample1];
+                let mut rgb = [0; 3];
+                for channel in 0..3 {
+                    let radial0 = a[channel] as f64 * (1.0 - line_t) + b[channel] as f64 * line_t;
+                    let radial1 = c[channel] as f64 * (1.0 - line_t) + d[channel] as f64 * line_t;
+                    rgb[channel] = (radial0 * (1.0 - sample_t) + radial1 * sample_t)
+                        .round()
+                        .clamp(0.0, 255.0) as u8;
+                }
+                canvas.put_pixel(x, y, Rgb(rgb));
+            }
+        }
+        Ok(match PolarConfig::DISPLAY_ROTATION_DEG.rem_euclid(360) {
+            90 => image::imageops::rotate90(&canvas),
+            180 => image::imageops::rotate180(&canvas),
+            270 => image::imageops::rotate270(&canvas),
+            _ => canvas,
+        })
     }
 
     #[test]

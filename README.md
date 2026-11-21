@@ -8,12 +8,16 @@ USB HID is separate: HoloFan can query controller status and read a memory dump 
 
 ## Features
 
-- Import JPEG, PNG, BMP, GIF, and WebP images
+- Import JPEG, PNG, BMP, GIF, and WebP images; select multiple files or a folder
+- Folder import reads top-level files in filename order; subfolders and unsupported files are skipped
+- Unreadable files are reported while successfully imported files remain in the playlist
+- Drag files or folders into the window (Windows and X11)
 - Arrange items in a playlist and set duration
 - Set each item's controller speed (1–255; new items default to 50)
 - Adjust framing, zoom, rotation, and mirroring
 - Preview the encoded circular frame
 - Save `.bin` files or write them to removable storage
+- Responsive Slint desktop interface with Slint attribution in About
 - Run on Windows and Linux
 
 The encoder targets the verified 112 × 450 controller format. Compatibility with other fan models has not been established.
@@ -29,6 +33,8 @@ cargo run --release
 ```
 
 JPEG decoding uses bundled IJG 8c source, so the application does not depend on a system JPEG library. This software is based in part on the work of the Independent JPEG Group.
+
+The interface uses Slint under its royalty-free license. The About view includes the required Slint attribution.
 
 ## Command line
 

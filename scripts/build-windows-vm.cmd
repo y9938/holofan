@@ -21,9 +21,10 @@ if errorlevel 1 (
   exit /b 1
 )
 
-set "WORKDIR=C:\holofan-build"
+set "WORKDIR=%TEMP%\holofan-build-%RANDOM%-%RANDOM%"
+set "CARGO_TARGET_DIR=%USERPROFILE%\.cache\holofan\windows-target"
 if exist "%WORKDIR%" (
-  echo Build directory already exists. Move or remove it before building. 1>&2
+    echo Temporary build directory already exists: %WORKDIR% 1>&2
   exit /b 1
 )
 if not exist "%WORKDIR%" mkdir "%WORKDIR%"
@@ -31,13 +32,16 @@ tar.exe -xzf "%~dp0holofan-src.tar.gz" -C "%WORKDIR%"
 if errorlevel 1 exit /b %errorlevel%
 
 set "CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS=-C target-feature=+crt-static"
+if not exist "%CARGO_TARGET_DIR%" mkdir "%CARGO_TARGET_DIR%"
 cd /d "%WORKDIR%"
 "%USERPROFILE%\.cargo\bin\cargo.exe" build --release --locked --bins
 if errorlevel 1 exit /b %errorlevel%
 
-"%WORKDIR%\target\release\holofan.exe" --version
+"%CARGO_TARGET_DIR%\release\holofan.exe" --version
 if errorlevel 1 exit /b %errorlevel%
-copy /y "%WORKDIR%\target\release\holofan.exe" "%~dp0holofan-windows-x86_64.exe" >nul
+copy /y "%CARGO_TARGET_DIR%\release\holofan.exe" "%~dp0holofan-windows-x86_64.exe" >nul
 if errorlevel 1 exit /b %errorlevel%
 
 echo Windows build and version smoke check passed.
+cd /d "%TEMP%"
+rmdir /s /q "%WORKDIR%"

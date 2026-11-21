@@ -176,7 +176,8 @@ fn test_seconds_duration_and_live_inspector() {
             offset_x: 10,
             offset_y: -5,
         },
-    );
+    )
+    .unwrap();
     assert_eq!(proj.total_frames(), 15);
     assert_eq!(proj.items[0].frame_count, 15);
     assert_eq!(proj.items[0].rotate_deg, 90);
@@ -196,4 +197,59 @@ fn test_seconds_duration_and_live_inspector() {
     assert_eq!(proj.items[0].frame_count, 15);
     assert_eq!(proj.items[1].frame_start, 15);
     assert_eq!(proj.items[1].frame_count, 45);
+}
+
+#[test]
+fn playlist_defaults_keep_gif_source_duration_and_five_seconds_for_stills() {
+    let dir = tempdir().unwrap();
+    let gif_path = create_test_gif(dir.path(), "short.gif", 5);
+    let still_path = create_test_png(dir.path(), "still.png", [80, 120, 160]);
+    let mut project = FanProject::new();
+
+    project.add_media_file_for_playlist(&gif_path).unwrap();
+    project.add_media_file_for_playlist(&still_path).unwrap();
+
+    assert!((project.items[0].duration_seconds - 0.5).abs() < 0.001);
+    assert_eq!(project.items[0].frame_count, 8);
+    assert_eq!(project.items[1].duration_seconds, 5.0);
+    assert_eq!(project.items[1].frame_count, 75);
+}
+
+#[test]
+fn background_transform_preparation_is_transactional_and_tracks_item_identity() {
+    let dir = tempdir().unwrap();
+    let first = create_test_png(dir.path(), "first.png", [220, 30, 30]);
+    let second = create_test_png(dir.path(), "second.png", [30, 220, 30]);
+    let mut project = FanProject::new();
+    project.add_media_file(&first, 1).unwrap();
+    project.add_media_file(&second, 1).unwrap();
+    let frames_before = project.frames.clone();
+    let first_id = project.items[0].id;
+
+    let prepared = project
+        .prepare_item_transform(
+            0,
+            2.0,
+            &TransformParams {
+                rotate_deg: 90,
+                ..TransformParams::default()
+            },
+            || false,
+        )
+        .unwrap();
+    assert_eq!(project.frames, frames_before);
+    assert_eq!(project.items[0].duration_seconds, 1.0 / 15.0);
+
+    project.move_item_down(0).unwrap();
+    project.commit_item_transform(prepared).unwrap();
+    let updated = project
+        .items
+        .iter()
+        .find(|item| item.id == first_id)
+        .unwrap();
+    assert_eq!(updated.duration_seconds, 2.0);
+    assert_eq!(updated.rotate_deg, 90);
+    assert_eq!(updated.frame_count, 30);
+    assert_eq!(updated.frame_start, 1);
+    assert_eq!(project.total_frames(), 31);
 }

@@ -6,6 +6,9 @@ use std::path::PathBuf;
 use std::str::FromStr;
 
 fn main() {
+    println!("cargo:rerun-if-changed=ui/main.slint");
+    let ui_config = slint_build::CompilerConfiguration::new().with_style("fluent-light".into());
+    slint_build::compile_with_config("ui/main.slint", ui_config).expect("compile Slint UI");
     let manifest_dir = PathBuf::from(env::var_os("CARGO_MANIFEST_DIR").expect("manifest dir"));
     build_jpeg8c(&manifest_dir);
     let locale_manifest = manifest_dir.join("locales.json");

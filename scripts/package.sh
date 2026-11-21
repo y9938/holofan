@@ -113,7 +113,9 @@ if [[ "$BUILD_LINUX" -eq 1 ]]; then
   fi
 
   LINUX_ARCHIVE="$DIST/holofan-$VERSION-linux-$ARCH.tar.gz"
-  tar -czf "$LINUX_ARCHIVE" -C "$TMP_STAGE" "holofan-$VERSION-linux-$ARCH"
+  # Keep package files at the archive root. File managers already create a folder
+  # named after the archive, so embedding another same-named directory nests twice.
+  tar -czf "$LINUX_ARCHIVE" -C "$LINUX_STAGE" .
   echo "Wrote $LINUX_ARCHIVE"
 
   # Smoke test on host
@@ -147,9 +149,7 @@ if [[ "$BUILD_WINDOWS" -eq 1 ]]; then
   echo "--> Building Windows release binary ($WIN_TARGET) in VM $WIN_VM..."
   WIN_SHARED_STAGE="$(mktemp -d "$WIN_SHARED_DIR/holofan-build.XXXXXX")"
   WIN_SHARED_NAME="$(basename "$WIN_SHARED_STAGE")"
-  tar -czf "$WIN_SHARED_STAGE/holofan-src.tar.gz" \
-    --exclude=./.git --exclude=./target --exclude=./dist --exclude=./node_modules \
-    -C "$ROOT" .
+  git archive --format=tar.gz --output="$WIN_SHARED_STAGE/holofan-src.tar.gz" HEAD
   cp "$ROOT/scripts/build-windows-vm.cmd" "$WIN_SHARED_STAGE/build-windows-vm.cmd"
   vm-ssh "$WIN_VM" "cmd /c Z:\\$WIN_SHARED_NAME\\build-windows-vm.cmd"
   WIN_BIN="$WIN_SHARED_STAGE/holofan-windows-x86_64.exe"
@@ -171,7 +171,8 @@ if [[ "$BUILD_WINDOWS" -eq 1 ]]; then
   fi
 
   WIN_ARCHIVE="$DIST/holofan-$VERSION-windows-$ARCH.zip"
-  (cd "$TMP_STAGE" && zip -rq "$WIN_ARCHIVE" "holofan-$VERSION-windows-$ARCH")
+  # Keep package files at the archive root for a single extraction folder.
+  (cd "$WIN_STAGE" && zip -rq "$WIN_ARCHIVE" *)
   echo "Wrote $WIN_ARCHIVE"
 
 fi

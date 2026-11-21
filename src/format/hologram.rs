@@ -32,6 +32,7 @@ pub const HOLOGRAM_TRAILER_MAGIC: [u8; 8] = [0x77, 0x66, 0x55, 0x44, 0x33, 0x22,
 pub const HOLOGRAM_HEADER_SIZE: usize = 4096;
 /// Maximum number of playlist entries in header.
 pub const MAX_PLAYLIST_ENTRIES: usize = 500;
+pub const MAX_SUPPORTED_FRAMES: usize = u16::MAX as usize;
 /// Size of a single playlist entry in bytes.
 pub const PLAYLIST_ENTRY_SIZE: usize = 6;
 /// Size of one padded frame in bytes.
@@ -172,11 +173,11 @@ impl HologramContainer {
 
     /// Serializes container into a binary stream.
     pub fn to_bytes(&self) -> Result<Vec<u8>> {
-        if self.frames.len() > u16::MAX as usize {
+        if self.frames.len() > MAX_SUPPORTED_FRAMES {
             bail!(
                 "Container has {} frames; the header supports at most {}",
                 self.frames.len(),
-                u16::MAX
+                MAX_SUPPORTED_FRAMES
             );
         }
         if self.playlist.len() > MAX_PLAYLIST_ENTRIES {

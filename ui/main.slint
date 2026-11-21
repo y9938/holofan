@@ -1,0 +1,712 @@
+import { Button, ComboBox, LineEdit, ListView, ScrollView, Slider, SpinBox, AboutSlint } from "std-widgets.slint";
+
+component PlaylistPanel inherits Rectangle {
+    in property <[string]> items;
+    in property <int> selected-index: -1;
+    in property <string> frame-summary;
+    in property <bool> has-selection: false;
+    in property <bool> has-project: false;
+    in property <string> device-status;
+    in property <int> language-index: 0;
+    callback select-item(int);
+    callback move-up();
+    callback move-down();
+    callback remove-item();
+    callback clear-items();
+    callback export-png();
+    callback connect-hid();
+    property <color> ink: #202d2a;
+    property <color> muted: #71807b;
+    property <color> line: #dce2dc;
+    property <color> teal: #087f72;
+    function tr(en: string, ru: string, zh: string) -> string {
+        if language-index == 1 { ru } else if language-index == 2 { zh } else { en }
+    }
+    background: #ffffff; border-radius: 9px; border-width: 1px; border-color: #dce2dc;
+    ScrollView {
+        x: 0; y: 0; width: 100%; height: 100%;
+        horizontal-scrollbar-policy: ScrollBarPolicy.always-off;
+        content-width: self.width;
+        VerticalLayout {
+        padding: 12px; spacing: 8px; alignment: start;
+        VerticalLayout {
+            spacing: 2px;
+            Text { text: root.tr("Playlist", "Плейлист", "播放列表"); color: root.ink; font-size: 17px; font-weight: 700; }
+            Text { text: root.frame-summary; color: root.muted; font-size: 11px; }
+        }
+        Rectangle { height: 1px; background: root.line; }
+        if root.items.length == 0: Rectangle {
+            preferred-height: 72px;
+            Text {
+                text: root.tr("Add media to start a playlist", "Добавьте файл, чтобы начать", "添加媒体以开始播放列表");
+                color: root.muted; font-size: 12px; horizontal-alignment: center; vertical-alignment: center;
+                x: 0; y: 0; width: 100%; height: 100%;
+            }
+        }
+        if root.items.length > 0: ListView {
+            preferred-height: min(240px, max(72px, root.items.length * 44px));
+            min-height: 72px; vertical-stretch: 0;
+            for item[i] in root.items: Rectangle {
+                height: 44px;
+                background: root.selected-index == i ? #e5f2ef : #ffffff;
+                border-radius: 5px;
+                HorizontalLayout {
+                    padding: 5px; spacing: 7px;
+                    Rectangle { width: 3px; background: root.selected-index == i ? root.teal : #ffffff; }
+                    Text { text: item; color: root.ink; font-size: 12px; overflow: elide; vertical-alignment: center; horizontal-stretch: 1; }
+                    Text { text: root.selected-index == i ? "●" : ""; color: root.teal; font-size: 8px; vertical-alignment: center; }
+                }
+                TouchArea { x: 0; y: 0; width: parent.width; height: parent.height; accessible-role: button; accessible-label: item; clicked => { root.select-item(i); } }
+            }
+        }
+        HorizontalLayout {
+            alignment: start;
+            spacing: 4px;
+            Button { width: 36px; horizontal-stretch: 0; enabled: root.has-selection && root.selected-index > 0; text: "↑"; clicked => { root.move-up(); } }
+            Button { width: 36px; horizontal-stretch: 0; enabled: root.has-selection && root.selected-index + 1 < root.items.length; text: "↓"; clicked => { root.move-down(); } }
+            Button { horizontal-stretch: 0; enabled: root.has-selection; text: root.tr("Delete", "Удалить", "删除"); clicked => { root.remove-item(); } }
+            Button { horizontal-stretch: 0; enabled: root.items.length > 0; text: root.tr("Clear", "Очистить", "清空"); clicked => { root.clear-items(); } }
+        }
+        HorizontalLayout {
+            alignment: start;
+            spacing: 6px;
+            Button { horizontal-stretch: 0; enabled: root.has-project; text: root.tr("Export PNG", "Экспорт PNG", "导出 PNG"); clicked => { root.export-png(); } }
+            Button { horizontal-stretch: 0; text: root.tr("USB HID status", "Статус USB HID", "控制器 HID 状态"); clicked => { root.connect-hid(); } }
+        }
+        Text { text: root.device-status; color: root.muted; font-size: 10px; wrap: word-wrap; }
+        }
+    }
+}
+
+component PreviewPanel inherits Rectangle {
+    in property <bool> compact: false;
+    in property <bool> short: false;
+    in property <bool> focused: false;
+    in property <image> preview;
+    in property <bool> has-project: false;
+    in-out property <float> current-frame: 0;
+    in property <int> total-frames: 0;
+    in property <string> frame-position;
+    in property <int> preview-fps: 15;
+    in property <bool> playing: false;
+    in property <int> language-index: 0;
+    callback frame-step(int);
+    callback frame-seek(int);
+    callback toggle-play();
+    callback preview-fps-changed(int);
+    property <color> ink: #202d2a;
+    property <color> muted: #71807b;
+    function tr(en: string, ru: string, zh: string) -> string {
+        if language-index == 1 { ru } else if language-index == 2 { zh } else { en }
+    }
+    background: #ffffff; border-radius: 9px; border-width: 1px; border-color: #dce2dc;
+    VerticalLayout {
+        x: 0; y: 0; width: 100%; height: 100%;
+        alignment: start; padding: 12px; spacing: 7px;
+        if !root.short: HorizontalLayout {
+            height: 28px;
+            vertical-stretch: 0;
+            Text { text: root.tr("Preview", "Предпросмотр", "预览"); color: root.ink; font-size: 17px; font-weight: 700; }
+            Rectangle { horizontal-stretch: 1; }
+            Text { text: root.frame-position; color: root.muted; font-size: 11px; vertical-alignment: center; }
+        }
+        if !root.compact: Rectangle { vertical-stretch: 1; }
+        Rectangle {
+            preferred-height: root.short ? 52px : (root.focused ? min(380px, max(160px, root.height * 0.62)) : (root.compact ? 82px : min(360px, max(180px, root.width * 0.68))));
+            width: root.focused ? min(root.width - 24px, min(380px, max(160px, root.height * 0.62))) : root.width - 24px;
+            horizontal-stretch: root.focused ? 0 : 1;
+            cross-axis-self-alignment: center;
+            min-height: root.short ? 50px : 72px;
+            vertical-stretch: 0;
+            background: #111917; border-radius: 7px;
+            Image { x: 0; y: 0; source: root.preview; image-fit: contain; width: 100%; height: 100%; }
+            if !root.has-project: Text { text: root.tr("Add media to see the display", "Добавьте файл для предпросмотра", "添加媒体以查看显示效果"); color: #98a49e; horizontal-alignment: center; vertical-alignment: center; wrap: word-wrap; }
+        }
+        HorizontalLayout {
+            height: 40px;
+            vertical-stretch: 0;
+            spacing: 5px;
+            Button { enabled: root.has-project; text: "|◀"; clicked => { root.frame-step(-1000000); } }
+            Button { enabled: root.has-project; text: "◀"; clicked => { root.frame-step(-1); } }
+            Button { enabled: root.has-project; horizontal-stretch: 1; text: root.playing ? root.tr("Pause", "Пауза", "暂停") : root.tr("Play", "Воспроизвести", "播放"); clicked => { root.toggle-play(); } }
+            Button { enabled: root.has-project; text: "▶"; clicked => { root.frame-step(1); } }
+            Button { enabled: root.has-project; text: "▶|"; clicked => { root.frame-step(1000000); } }
+        }
+        if !root.short: Slider { height: 18px; vertical-stretch: 0; enabled: root.has-project; minimum: 0; maximum: max(1, root.total-frames - 1); value <=> root.current-frame; changed => { root.frame-seek(self.value); } }
+        if !root.compact || root.focused: HorizontalLayout {
+            height: 24px;
+            vertical-stretch: 0;
+            Text { text: root.tr("Preview FPS", "Частота предпросмотра", "预览帧率"); color: root.muted; font-size: 10px; vertical-alignment: center; }
+            Slider { minimum: 1; maximum: 60; value: root.preview-fps; horizontal-stretch: 1; changed => { root.preview-fps-changed(self.value); } }
+            Text { text: root.preview-fps + " FPS"; color: root.muted; font-size: 10px; vertical-alignment: center; }
+        }
+        if !root.compact: Rectangle { vertical-stretch: 1; }
+    }
+}
+
+component AdjustPanel inherits Rectangle {
+    in property <bool> has-selection: false;
+    in property <string> item-title;
+    in property <int> duration-tenths: 50;
+    in property <string> duration-input: "5.0";
+    in property <int> controller-speed: 50;
+    in property <int> fit-mode: 1;
+    in property <int> zoom-percent: 100;
+    in property <int> offset-x: 0;
+    in property <int> offset-y: 0;
+    in property <int> rotation: 0;
+    in property <bool> flip-v: false;
+    in property <bool> flip-h: false;
+    in property <int> language-index: 0;
+    callback update-duration(int);
+    callback update-duration-text(string);
+    callback update-speed(int);
+    callback update-fit(int);
+    callback update-zoom(int);
+    callback update-offset(int, int);
+    callback update-rotation(int);
+    callback toggle-flip-v();
+    callback toggle-flip-h();
+    property <color> ink: #202d2a;
+    property <color> muted: #71807b;
+    property <color> line: #dce2dc;
+    function tr(en: string, ru: string, zh: string) -> string {
+        if language-index == 1 { ru } else if language-index == 2 { zh } else { en }
+    }
+    background: #ffffff; border-radius: 9px; border-width: 1px; border-color: #dce2dc;
+    ScrollView {
+        x: 0; y: 0; width: 100%; height: 100%;
+        VerticalLayout {
+            padding: 12px; spacing: 8px; alignment: start;
+            Text { text: root.tr("Adjust item", "Настройки элемента", "调整项目"); color: root.ink; font-size: 17px; font-weight: 700; }
+            Text { text: root.item-title; color: root.muted; font-size: 11px; overflow: elide; }
+            Rectangle { height: 1px; background: root.line; }
+            Text { text: root.tr("Duration", "Длительность", "时长"); color: root.ink; font-size: 11px; }
+            HorizontalLayout {
+                LineEdit { enabled: root.has-selection; horizontal-stretch: 1; text: root.duration-input; accepted => { root.update-duration-text(self.text); } }
+                Text { text: "s"; color: root.muted; vertical-alignment: center; }
+            }
+            HorizontalLayout {
+                Button { enabled: root.has-selection; horizontal-stretch: 1; text: "− 0.5 s"; clicked => { root.update-duration(root.duration-tenths - 5); } }
+                Button { enabled: root.has-selection; horizontal-stretch: 1; text: "+ 0.5 s"; clicked => { root.update-duration(root.duration-tenths + 5); } }
+            }
+            HorizontalLayout {
+                Button { enabled: root.has-selection; horizontal-stretch: 1; text: "1 s"; clicked => { root.update-duration(10); } }
+                Button { enabled: root.has-selection; horizontal-stretch: 1; text: "2 s"; clicked => { root.update-duration(20); } }
+                Button { enabled: root.has-selection; horizontal-stretch: 1; text: "5 s"; clicked => { root.update-duration(50); } }
+                Button { enabled: root.has-selection; horizontal-stretch: 1; text: "10 s"; clicked => { root.update-duration(100); } }
+            }
+            Text { text: root.tr("Controller speed", "Скорость контроллера", "控制器速度"); color: root.ink; font-size: 11px; }
+            SpinBox { enabled: root.has-selection; minimum: 1; maximum: 255; value: root.controller-speed; edited => { root.update-speed(self.value); } }
+            Text { text: root.tr("Fit", "Кадрирование", "画面适配"); color: root.ink; font-size: 11px; }
+            ComboBox { enabled: root.has-selection; model: [root.tr("Fit", "Вписать", "适应"), root.tr("Fill", "Заполнить", "填充"), root.tr("Stretch", "Растянуть", "拉伸")]; current-index: root.fit-mode; selected => { root.update-fit(self.current-index); } }
+            Text { text: root.tr("Scale", "Масштаб", "缩放") + " · " + root.zoom-percent + "%"; color: root.ink; font-size: 11px; }
+            Slider { enabled: root.has-selection; minimum: 20; maximum: 300; value: root.zoom-percent; changed => { root.update-zoom(self.value); } }
+            Text { text: root.tr("Position", "Положение", "位置") + " · X " + root.offset-x + " / Y " + root.offset-y; color: root.ink; font-size: 11px; }
+            HorizontalLayout {
+                spacing: 3px;
+                Button { enabled: root.has-selection; horizontal-stretch: 1; text: "←"; clicked => { root.update-offset(root.offset-x - 10, root.offset-y); } }
+                Button { enabled: root.has-selection; horizontal-stretch: 1; text: "→"; clicked => { root.update-offset(root.offset-x + 10, root.offset-y); } }
+                Button { enabled: root.has-selection; horizontal-stretch: 1; text: "↑"; clicked => { root.update-offset(root.offset-x, root.offset-y - 10); } }
+                Button { enabled: root.has-selection; horizontal-stretch: 1; text: "↓"; clicked => { root.update-offset(root.offset-x, root.offset-y + 10); } }
+                Button { enabled: root.has-selection; horizontal-stretch: 1; text: root.tr("Reset", "Сброс", "重置"); clicked => { root.update-offset(0, 0); } }
+            }
+            Text { text: root.tr("Rotation", "Поворот", "旋转"); color: root.ink; font-size: 11px; }
+            HorizontalLayout {
+                Button { enabled: root.has-selection; horizontal-stretch: 1; text: "−90°"; clicked => { root.update-rotation(root.rotation - 90); } }
+                Button { enabled: root.has-selection; horizontal-stretch: 1; text: "+90°"; clicked => { root.update-rotation(root.rotation + 90); } }
+                Button { enabled: root.has-selection; horizontal-stretch: 1; text: "180°"; clicked => { root.update-rotation(root.rotation + 180); } }
+            }
+            HorizontalLayout {
+                Button { enabled: root.has-selection; horizontal-stretch: 1; text: root.flip-v ? root.tr("Mirror vertical · On", "По вертикали · вкл.", "垂直镜像 · 开") : root.tr("Mirror vertical", "По вертикали", "垂直镜像"); clicked => { root.toggle-flip-v(); } }
+                Button { enabled: root.has-selection; horizontal-stretch: 1; text: root.flip-h ? root.tr("Mirror horizontal · On", "По горизонтали · вкл.", "水平镜像 · 开") : root.tr("Mirror horizontal", "По горизонтали", "水平镜像"); clicked => { root.toggle-flip-h(); } }
+            }
+        }
+    }
+}
+
+component SectionTab inherits Rectangle {
+    in property <string> label;
+    in property <bool> selected: false;
+    callback activated();
+    height: 38px;
+    background: root.selected ? #dceee9 : #ffffff;
+    border-radius: 6px; border-width: 1px;
+    border-color: root.selected ? #92c7ba : #dce2dc;
+    Text {
+        x: 0; y: 0; width: 100%; height: 100%;
+        text: root.label;
+        color: root.selected ? #087f72 : #202d2a;
+        font-size: 13px; font-weight: root.selected ? 700 : 400;
+        horizontal-alignment: center; vertical-alignment: center;
+    }
+    TouchArea {
+        x: 0; y: 0; width: 100%; height: 100%;
+        accessible-role: button; accessible-label: root.label;
+        clicked => { root.activated(); }
+    }
+}
+
+component LanguagePicker inherits Rectangle {
+    in property <int> language-index: 0;
+    callback selected(int);
+    property <string> label: language-index == 1 ? "Русский" : (language-index == 2 ? "中文" : "English");
+    min-width: 160px;
+    min-height: 28px;
+    background: #f4f5f2;
+    border-radius: 4px;
+    border-width: 1px;
+    border-color: #cbd2cd;
+
+    language-combo := ComboBox {
+        x: 0; y: 0; width: 100%; height: 100%;
+        model: ["English", "Русский", "中文"];
+        current-index: root.language-index;
+        selected => { root.selected(self.current-index); }
+    }
+    Rectangle {
+        x: 1px; y: 1px; width: parent.width - 2px; height: parent.height - 2px;
+        background: #f4f5f2;
+        Text { x: 0; y: 0; width: parent.width - 24px; height: 100%; text: root.label; color: #202d2a; font-size: 12px; horizontal-alignment: center; vertical-alignment: center; }
+        Text { x: parent.width - 26px; y: 0; width: 24px; height: 100%; text: "▾"; color: #52615b; font-size: 12px; horizontal-alignment: center; vertical-alignment: center; }
+    }
+}
+
+export component MainWindow inherits Window {
+    title: "HoloFan";
+    preferred-width: 1180px;
+    preferred-height: 780px;
+    min-width: 350px;
+    min-height: 360px;
+    background: #f2f3f0;
+
+    in-out property <[string]> items;
+    in-out property <int> selected-index: -1;
+    in-out property <image> preview;
+    in-out property <string> status: "Ready · Add media or open a .bin file";
+    in-out property <string> filename: "hologram.bin";
+    in-out property <string> device-status: "Not connected";
+    in-out property <string> item-title: "No item selected";
+    in-out property <string> frame-summary: "0 items · 0 frames · 0.0 s";
+    in-out property <string> frame-position: "0 / 0";
+    in-out property <float> current-frame: 0;
+    in-out property <int> total-frames: 0;
+    in-out property <int> preview-fps: 15;
+    in-out property <int> duration-tenths: 50;
+    in-out property <string> duration-input: "5.0";
+    in-out property <int> controller-speed: 50;
+    in-out property <int> zoom-percent: 100;
+    in-out property <int> offset-x: 0;
+    in-out property <int> offset-y: 0;
+    in-out property <int> rotation: 0;
+    in-out property <int> fit-mode: 1;
+    in-out property <bool> flip-v: false;
+    in-out property <bool> flip-h: false;
+    in-out property <int> language-index: 0;
+    in-out property <bool> playing: false;
+    in-out property <bool> show-about: false;
+    in-out property <bool> show-add-menu: false;
+    in-out property <bool> import-active: false;
+    in-out property <string> import-progress: "";
+    in-out property <bool> show-import-result: false;
+    in-out property <string> import-result: "";
+    in-out property <bool> drop-hovered: false;
+    in-out property <int> compact-panel: 1;
+    property <bool> narrow: self.width < 760px;
+    property <bool> wide: self.width >= 1000px;
+    property <bool> row-layout: self.width >= 760px && self.height >= 850px && self.height >= self.width - 80px;
+    property <bool> columns-layout: !self.row-layout && self.width >= 980px && self.height >= 700px && self.width > self.height;
+    property <bool> compact: !self.row-layout && !self.columns-layout;
+    property <bool> has-selection: selected-index >= 0;
+    property <bool> has-project: total-frames > 0;
+
+    callback add-media();
+    callback add-media-files();
+    callback add-media-folder();
+    callback cancel-import();
+    callback dismiss-import-result();
+    callback open-bin();
+    callback save-bin();
+    callback write-storage();
+    callback export-png();
+    callback connect-hid();
+    callback select-item(int);
+    callback remove-item();
+    callback move-up();
+    callback move-down();
+    callback clear-items();
+    callback update-duration(int);
+    callback update-duration-text(string);
+    callback update-speed(int);
+    callback update-zoom(int);
+    callback update-offset(int, int);
+    callback update-rotation(int);
+    callback update-fit(int);
+    callback toggle-flip-v();
+    callback toggle-flip-h();
+    callback frame-step(int);
+    callback frame-seek(int);
+    callback preview-fps-changed(int);
+    callback toggle-play();
+    callback filename-changed(string);
+    callback filename-accepted(string);
+    callback language-changed(int);
+
+    property <color> ink: #202d2a;
+    property <color> muted: #71807b;
+    property <color> paper: #f2f3f0;
+    property <color> panel: #ffffff;
+    property <color> line: #dce2dc;
+    property <color> teal: #087f72;
+
+    function tr(en: string, ru: string, zh: string) -> string {
+        if language-index == 1 { ru } else if language-index == 2 { zh } else { en }
+    }
+
+    Rectangle {
+        width: 100%; height: 100%; background: root.paper;
+        FocusScope {
+            width: 100%; height: 100%;
+            KeyBinding { keys: @keys(Control+O); activated => { root.open-bin(); } }
+            KeyBinding { keys: @keys(Control+Shift+O); activated => { root.add-media(); } }
+            KeyBinding { keys: @keys(Control+S); activated => { root.save-bin(); } }
+        }
+        VerticalLayout {
+            x: 0; y: 0; width: 100%; height: 100%; padding-top: 8px;
+            spacing: 0px;
+            if root.wide: HorizontalLayout {
+                height: 32px; spacing: 6px; padding-right: 8px;
+                Rectangle {
+                    width: 112px; height: 32px; background: #202d2a;
+                    Text { x: 14px; y: 0; width: 100px; height: 100%; text: "HOLOFAN"; color: #f4f5f2; font-size: 16px; font-weight: 700; vertical-alignment: center; }
+                }
+                Button { height: 28px; text: root.tr("＋ Add", "＋ Добавить", "＋ 添加"); clicked => { root.add-media(); } }
+                Button { height: 28px; text: root.tr("Open .bin", "Открыть .bin", "打开 .bin"); clicked => { root.open-bin(); } }
+                Button { height: 28px; enabled: root.has-project; text: root.tr("Save .bin", "Сохранить .bin", "保存 .bin"); clicked => { root.save-bin(); } }
+                Text { text: root.tr("File", "Файл", "文件"); color: root.muted; font-size: 10px; vertical-alignment: center; }
+                LineEdit {
+                    preferred-width: 110px; height: 28px; horizontal-stretch: 1; text: root.filename;
+                    placeholder-text: "hologram.bin";
+                    edited => { root.filename-changed(self.text); }
+                    accepted => { root.filename-accepted(self.text); }
+                }
+                Button { height: 28px; enabled: root.has-project; text: root.tr("Write to SD / USB", "На SD / USB", "写入 SD / USB"); clicked => { root.write-storage(); } }
+                    LanguagePicker {
+                        preferred-width: 160px; height: 28px; horizontal-stretch: 0;
+                        language-index: root.language-index;
+                        selected(index) => { root.language-changed(index); }
+                }
+                Button { height: 28px; text: root.tr("About", "О программе", "关于"); clicked => { root.show-about = true; } }
+            }
+            if !root.wide: Rectangle {
+                height: 40px; background: #202d2a;
+                HorizontalLayout {
+                    x: 0; y: 0; width: 100%; height: 100%;
+                    padding-left: 16px; padding-right: 14px; spacing: 10px;
+                    Text { text: "HOLOFAN"; color: #f4f5f2; font-size: 18px; font-weight: 700; vertical-alignment: center; }
+                    if !root.narrow: Text { text: root.tr("DISPLAY STUDIO", "СТУДИЯ ДИСПЛЕЯ", "显示工作室"); color: #9eada6; font-size: 10px; letter-spacing: 1px; vertical-alignment: center; }
+                    Rectangle { horizontal-stretch: 1; }
+                    LanguagePicker {
+                        preferred-width: 160px; height: 34px; horizontal-stretch: 0;
+                        cross-axis-self-alignment: center;
+                        language-index: root.language-index;
+                        selected(index) => { root.language-changed(index); }
+                    }
+                    Button { height: 34px; cross-axis-self-alignment: center; text: root.tr("About", "О программе", "关于"); clicked => { root.show-about = true; } }
+                }
+            }
+            if !root.wide: Rectangle { height: 6px; }
+
+            if !root.wide && !root.narrow: HorizontalLayout {
+                height: 40px; padding-left: 12px; padding-right: 12px; spacing: 8px;
+                Button { height: 34px; text: root.tr("＋ Add media", "＋ Добавить", "＋ 添加媒体"); clicked => { root.add-media(); } }
+                Button { height: 34px; text: root.tr("Open .bin", "Открыть .bin", "打开 .bin"); clicked => { root.open-bin(); } }
+                Button { height: 34px; enabled: root.has-project; text: root.tr("Save .bin", "Сохранить .bin", "保存 .bin"); clicked => { root.save-bin(); } }
+                Text { text: root.tr("File name", "Имя файла", "文件名"); color: root.muted; font-size: 11px; vertical-alignment: center; }
+                LineEdit {
+                    preferred-width: 150px; height: 34px; horizontal-stretch: 1; text: root.filename;
+                    placeholder-text: "hologram.bin";
+                    edited => { root.filename-changed(self.text); }
+                    accepted => { root.filename-accepted(self.text); }
+                }
+                Button { height: 34px; enabled: root.has-project; text: root.tr("Copy .bin to SD / USB", "Копировать .bin на SD / USB", "复制 .bin 到 SD / USB"); clicked => { root.write-storage(); } }
+            }
+            if root.narrow: VerticalLayout {
+                padding-left: 10px; padding-right: 10px; padding-top: 2px; padding-bottom: 2px; spacing: 3px;
+                HorizontalLayout {
+                    height: 36px;
+                    spacing: 6px;
+                    Button { height: 32px; horizontal-stretch: 1; text: root.tr("＋ Add media", "＋ Добавить медиа", "＋ 添加媒体"); clicked => { root.add-media(); } }
+                    Button { height: 32px; horizontal-stretch: 1; text: root.tr("Copy .bin to drive", "Записать .bin", "复制 .bin 到磁盘"); enabled: root.has-project; clicked => { root.write-storage(); } }
+                }
+                HorizontalLayout {
+                    height: 36px;
+                    spacing: 6px;
+                    Text { text: root.tr("File", "Файл", "文件"); color: root.muted; font-size: 11px; vertical-alignment: center; }
+                    LineEdit {
+                        preferred-width: 100px; height: 32px; horizontal-stretch: 1; text: root.filename;
+                        placeholder-text: "hologram.bin";
+                        edited => { root.filename-changed(self.text); }
+                        accepted => { root.filename-accepted(self.text); }
+                    }
+                    Button { height: 32px; enabled: root.has-project; text: root.tr("Save", "Сохранить", "保存"); clicked => { root.save-bin(); } }
+                    Button { height: 32px; text: root.tr("Open", "Открыть", "打开"); clicked => { root.open-bin(); } }
+                }
+            }
+            Rectangle { height: 1px; background: root.line; }
+
+            if root.columns-layout: HorizontalLayout {
+                padding: 10px; spacing: 10px; vertical-stretch: 1; min-height: 0px;
+                PlaylistPanel {
+                    width: 300px; vertical-stretch: 1; min-height: 0px;
+                    items: root.items; selected-index: root.selected-index; frame-summary: root.frame-summary;
+                    has-selection: root.has-selection; has-project: root.has-project; device-status: root.device-status;
+                    language-index: root.language-index;
+                    select-item(i) => { root.select-item(i); }
+                    move-up => { root.move-up(); }
+                    move-down => { root.move-down(); }
+                    remove-item => { root.remove-item(); }
+                    clear-items => { root.clear-items(); }
+                    export-png => { root.export-png(); }
+                    connect-hid => { root.connect-hid(); }
+                }
+                PreviewPanel {
+                    vertical-stretch: 1; min-width: 260px; min-height: 0px;
+                    compact: false;
+                    preview: root.preview; has-project: root.has-project; current-frame <=> root.current-frame;
+                    total-frames: root.total-frames; frame-position: root.frame-position;
+                    preview-fps: root.preview-fps; playing: root.playing; language-index: root.language-index;
+                    frame-step(delta) => { root.frame-step(delta); }
+                    frame-seek(frame) => { root.frame-seek(frame); }
+                    toggle-play => { root.toggle-play(); }
+                    preview-fps-changed(fps) => { root.preview-fps-changed(fps); }
+                }
+                AdjustPanel {
+                    width: 310px; vertical-stretch: 1; min-height: 0px;
+                    has-selection: root.has-selection; item-title: root.item-title;
+                    duration-tenths: root.duration-tenths; duration-input: root.duration-input;
+                    controller-speed: root.controller-speed; fit-mode: root.fit-mode;
+                    zoom-percent: root.zoom-percent; offset-x: root.offset-x; offset-y: root.offset-y;
+                    rotation: root.rotation; flip-v: root.flip-v; flip-h: root.flip-h;
+                    language-index: root.language-index;
+                    update-duration(value) => { root.update-duration(value); }
+                    update-duration-text(value) => { root.update-duration-text(value); }
+                    update-speed(value) => { root.update-speed(value); }
+                    update-fit(value) => { root.update-fit(value); }
+                    update-zoom(value) => { root.update-zoom(value); }
+                    update-offset(x, y) => { root.update-offset(x, y); }
+                    update-rotation(value) => { root.update-rotation(value); }
+                    toggle-flip-v => { root.toggle-flip-v(); }
+                    toggle-flip-h => { root.toggle-flip-h(); }
+                }
+            }
+
+            if root.row-layout: VerticalLayout {
+                padding: 10px; spacing: 8px; vertical-stretch: 1; min-height: 0px;
+                PlaylistPanel {
+                    vertical-stretch: 1; min-height: 240px;
+                    items: root.items; selected-index: root.selected-index; frame-summary: root.frame-summary;
+                    has-selection: root.has-selection; has-project: root.has-project; device-status: root.device-status;
+                    language-index: root.language-index;
+                    select-item(i) => { root.select-item(i); }
+                    move-up => { root.move-up(); }
+                    move-down => { root.move-down(); }
+                    remove-item => { root.remove-item(); }
+                    clear-items => { root.clear-items(); }
+                    export-png => { root.export-png(); }
+                    connect-hid => { root.connect-hid(); }
+                }
+                PreviewPanel {
+                    vertical-stretch: 12; min-height: 240px; compact: true; focused: true;
+                    preview: root.preview; has-project: root.has-project; current-frame <=> root.current-frame;
+                    total-frames: root.total-frames; frame-position: root.frame-position;
+                    preview-fps: root.preview-fps; playing: root.playing; language-index: root.language-index;
+                    frame-step(delta) => { root.frame-step(delta); }
+                    frame-seek(frame) => { root.frame-seek(frame); }
+                    toggle-play => { root.toggle-play(); }
+                    preview-fps-changed(fps) => { root.preview-fps-changed(fps); }
+                }
+                AdjustPanel {
+                    vertical-stretch: 1; min-height: 180px;
+                    has-selection: root.has-selection; item-title: root.item-title;
+                    duration-tenths: root.duration-tenths; duration-input: root.duration-input;
+                    controller-speed: root.controller-speed; fit-mode: root.fit-mode;
+                    zoom-percent: root.zoom-percent; offset-x: root.offset-x; offset-y: root.offset-y;
+                    rotation: root.rotation; flip-v: root.flip-v; flip-h: root.flip-h;
+                    language-index: root.language-index;
+                    update-duration(value) => { root.update-duration(value); }
+                    update-duration-text(value) => { root.update-duration-text(value); }
+                    update-speed(value) => { root.update-speed(value); }
+                    update-fit(value) => { root.update-fit(value); }
+                    update-zoom(value) => { root.update-zoom(value); }
+                    update-offset(x, y) => { root.update-offset(x, y); }
+                    update-rotation(value) => { root.update-rotation(value); }
+                    toggle-flip-v => { root.toggle-flip-v(); }
+                    toggle-flip-h => { root.toggle-flip-h(); }
+                }
+            }
+
+            if root.compact: VerticalLayout {
+                padding: 8px; spacing: 6px; vertical-stretch: 1; min-height: 0px;
+                if root.height >= 700px: PreviewPanel {
+                    preferred-height: 220px; vertical-stretch: 0; min-height: 125px; compact: true;
+                    preview: root.preview; has-project: root.has-project; current-frame <=> root.current-frame;
+                    total-frames: root.total-frames; frame-position: root.frame-position;
+                    preview-fps: root.preview-fps; playing: root.playing; language-index: root.language-index;
+                    frame-step(delta) => { root.frame-step(delta); }
+                    frame-seek(frame) => { root.frame-seek(frame); }
+                    toggle-play => { root.toggle-play(); }
+                    preview-fps-changed(fps) => { root.preview-fps-changed(fps); }
+                }
+                if root.height < 700px: HorizontalLayout {
+                    height: 38px; spacing: 6px;
+                    SectionTab { horizontal-stretch: 1; label: root.tr("Playlist", "Плейлист", "播放列表"); selected: root.compact-panel == 0; activated => { root.compact-panel = 0; } }
+                    SectionTab { horizontal-stretch: 1; label: root.tr("Preview", "Предпросмотр", "预览"); selected: root.compact-panel == 1; activated => { root.compact-panel = 1; } }
+                    SectionTab { horizontal-stretch: 1; label: root.tr("Adjust", "Настройки", "调整"); selected: root.compact-panel == 2; activated => { root.compact-panel = 2; } }
+                }
+                if root.height >= 700px: HorizontalLayout {
+                    height: 38px; spacing: 6px;
+                    SectionTab { horizontal-stretch: 1; label: root.tr("Playlist", "Плейлист", "播放列表"); selected: root.compact-panel != 2; activated => { root.compact-panel = 0; } }
+                    SectionTab { horizontal-stretch: 1; label: root.tr("Adjust", "Настройки", "调整"); selected: root.compact-panel == 2; activated => { root.compact-panel = 2; } }
+                }
+                Rectangle {
+                    vertical-stretch: 1; min-height: 0px;
+                    if root.height < 700px && root.compact-panel == 1: PreviewPanel {
+                        width: 100%; height: 100%;
+                        compact: true; short: root.height < 480px; focused: true;
+                        preview: root.preview; has-project: root.has-project; current-frame <=> root.current-frame;
+                        total-frames: root.total-frames; frame-position: root.frame-position;
+                        preview-fps: root.preview-fps; playing: root.playing; language-index: root.language-index;
+                        frame-step(delta) => { root.frame-step(delta); }
+                        frame-seek(frame) => { root.frame-seek(frame); }
+                        toggle-play => { root.toggle-play(); }
+                        preview-fps-changed(fps) => { root.preview-fps-changed(fps); }
+                    }
+                    if root.compact-panel == 0 || (root.height >= 700px && root.compact-panel == 1): PlaylistPanel {
+                        width: 100%; height: 100%; min-height: 0px;
+                        items: root.items; selected-index: root.selected-index; frame-summary: root.frame-summary;
+                        has-selection: root.has-selection; has-project: root.has-project; device-status: root.device-status;
+                        language-index: root.language-index;
+                        select-item(i) => { root.select-item(i); }
+                        move-up => { root.move-up(); }
+                        move-down => { root.move-down(); }
+                        remove-item => { root.remove-item(); }
+                        clear-items => { root.clear-items(); }
+                        export-png => { root.export-png(); }
+                        connect-hid => { root.connect-hid(); }
+                    }
+                    if root.compact-panel == 2: AdjustPanel {
+                        width: 100%; height: 100%; min-height: 0px;
+                        has-selection: root.has-selection; item-title: root.item-title;
+                        duration-tenths: root.duration-tenths; duration-input: root.duration-input;
+                        controller-speed: root.controller-speed; fit-mode: root.fit-mode;
+                        zoom-percent: root.zoom-percent; offset-x: root.offset-x; offset-y: root.offset-y;
+                        rotation: root.rotation; flip-v: root.flip-v; flip-h: root.flip-h;
+                        language-index: root.language-index;
+                        update-duration(value) => { root.update-duration(value); }
+                        update-duration-text(value) => { root.update-duration-text(value); }
+                        update-speed(value) => { root.update-speed(value); }
+                        update-fit(value) => { root.update-fit(value); }
+                        update-zoom(value) => { root.update-zoom(value); }
+                        update-offset(x, y) => { root.update-offset(x, y); }
+                        update-rotation(value) => { root.update-rotation(value); }
+                        toggle-flip-v => { root.toggle-flip-v(); }
+                        toggle-flip-h => { root.toggle-flip-h(); }
+                    }
+                }
+            }
+
+            Rectangle { height: 1px; background: root.line; }
+            HorizontalLayout {
+                height: 32px; padding-left: 12px; padding-right: 12px; spacing: 8px;
+                Text { text: root.status; color: root.ink; font-size: 11px; overflow: elide; vertical-alignment: center; horizontal-stretch: 1; }
+                if root.width >= 900px: Text { text: root.tr("112 LEDs · 450 lines · 114,688 bytes/frame", "112 светодиодов · 450 линий · 114 688 байт/кадр", "112 个 LED · 450 条扫描线 · 114,688 字节/帧"); color: root.muted; font-size: 10px; vertical-alignment: center; }
+            }
+        }
+    }
+
+    if root.show-add-menu: Rectangle {
+        background: #00000066;
+        TouchArea { clicked => { root.show-add-menu = false; } }
+        Rectangle {
+            width: min(root.width - 32px, 360px); height: 202px;
+            x: (root.width - self.width) / 2; y: (root.height - self.height) / 2;
+            background: #ffffff; border-radius: 12px;
+            VerticalLayout {
+                padding: 20px; spacing: 10px;
+                Text { text: root.tr("Add to playlist", "Добавить в плейлист", "添加到播放列表"); color: root.ink; font-size: 18px; font-weight: 700; }
+                Text { text: root.tr("Choose media files or a folder", "Выберите файлы или папку", "选择媒体文件或文件夹"); color: root.muted; font-size: 12px; }
+                Button { height: 34px; text: root.tr("Choose files…", "Выбрать файлы…", "选择文件…"); clicked => { root.show-add-menu = false; root.add-media-files(); } }
+                Button { height: 34px; text: root.tr("Choose folder…", "Выбрать папку…", "选择文件夹…"); clicked => { root.show-add-menu = false; root.add-media-folder(); } }
+                Button { height: 30px; text: root.tr("Cancel", "Отмена", "取消"); clicked => { root.show-add-menu = false; } }
+            }
+        }
+    }
+
+    if root.import-active: Rectangle {
+        background: #00000066;
+        TouchArea { }
+        Rectangle {
+            width: min(root.width - 32px, 380px); height: 164px;
+            x: (root.width - self.width) / 2; y: (root.height - self.height) / 2;
+            background: #ffffff; border-radius: 12px;
+            VerticalLayout {
+                padding: 20px; spacing: 12px;
+                Text { text: root.tr("Importing media", "Добавление медиа", "正在导入媒体"); color: root.ink; font-size: 18px; font-weight: 700; }
+                Text { text: root.import-progress; color: root.muted; font-size: 12px; wrap: word-wrap; }
+                Button { height: 34px; text: root.tr("Cancel after current file", "Отменить после текущего файла", "当前文件完成后取消"); clicked => { root.cancel-import(); } }
+            }
+        }
+    }
+
+    if root.show-import-result: Rectangle {
+        background: #00000066;
+        TouchArea { }
+        Rectangle {
+            width: min(root.width - 28px, 460px); height: min(root.height - 36px, 340px);
+            x: (root.width - self.width) / 2; y: (root.height - self.height) / 2;
+            background: #ffffff; border-radius: 12px;
+            VerticalLayout {
+                padding: 20px; spacing: 12px;
+                Text { text: root.tr("Import report", "Результат импорта", "导入报告"); color: root.ink; font-size: 18px; font-weight: 700; }
+                ScrollView {
+                    vertical-stretch: 1; min-height: 80px;
+                    Text { width: 100%; text: root.import-result; color: root.ink; font-size: 12px; wrap: word-wrap; }
+                }
+                Button { height: 34px; text: root.tr("Done", "Готово", "完成"); clicked => { root.dismiss-import-result(); } }
+            }
+        }
+    }
+
+    if root.show-about: Rectangle {
+        background: #00000088;
+        TouchArea { clicked => { root.show-about = false; } }
+        Rectangle {
+            width: min(root.width - 32px, 420px); height: 280px;
+            x: (root.width - self.width) / 2; y: (root.height - self.height) / 2;
+            background: #ffffff; border-radius: 12px;
+            VerticalLayout {
+                padding: 22px; spacing: 12px;
+                Text { text: root.tr("About HoloFan", "О программе HoloFan", "关于 HoloFan"); color: root.ink; font-size: 20px; font-weight: 700; }
+                Text { text: root.tr("Editor and encoder for rotating LED POV displays.", "Редактор и кодировщик для вращающихся POV-дисплеев.", "旋转式 LED POV 显示器编辑与编码工具。"); color: root.ink; wrap: word-wrap; }
+                Text { text: root.tr("HoloFan is licensed under the MIT License.", "HoloFan распространяется по лицензии MIT.", "HoloFan 使用 MIT 许可证。"); color: root.muted; wrap: word-wrap; }
+                AboutSlint { }
+                Rectangle { vertical-stretch: 1; }
+                Button { text: root.tr("Close", "Закрыть", "关闭"); clicked => { root.show-about = false; } }
+            }
+        }
+    }
+    if root.drop-hovered: Rectangle {
+        width: 100%; height: 100%; background: #087f7228; border-width: 3px; border-color: root.teal;
+        Rectangle {
+            width: min(root.width - 40px, 420px); height: 100px;
+            x: (root.width - self.width) / 2; y: (root.height - self.height) / 2;
+            background: #ffffff; border-radius: 12px; border-width: 1px; border-color: root.teal;
+            VerticalLayout {
+                alignment: center; padding: 18px; spacing: 6px;
+                Text { text: root.tr("Drop images or a .bin file", "Перетащите изображения или файл .bin", "拖放图像或 .bin 文件"); color: root.ink; font-size: 17px; font-weight: 700; horizontal-alignment: center; }
+                Text { text: root.tr("Images are added to the playlist", "Изображения добавятся в плейлист", "图像将添加到播放列表"); color: root.muted; font-size: 12px; horizontal-alignment: center; }
+            }
+        }
+    }
+}

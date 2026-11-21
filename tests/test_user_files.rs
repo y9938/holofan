@@ -56,7 +56,8 @@ fn test_export_pipeline_and_removable_drive_hermetic() {
     let f1 = proj
         .add_media_file(&gif_file, 15)
         .expect("Failed to add GIF");
-    assert_eq!(f1, 4);
+    // The four 100 ms source frames sample to six frames at the controller's 15 FPS.
+    assert_eq!(f1, 6);
 
     let f2 = proj
         .add_media_file(&jpg_file, 10)
@@ -68,34 +69,34 @@ fn test_export_pipeline_and_removable_drive_hermetic() {
         .expect("Failed to add PNG");
     assert_eq!(f3, 6);
 
-    // Verify global frame totals: 4 + 10 + 6 = 20 frames
+    // Verify global frame totals: 6 + 10 + 6 = 22 frames
     assert_eq!(proj.item_count(), 3);
-    assert_eq!(proj.total_frames(), 20);
+    assert_eq!(proj.total_frames(), 22);
 
     // Verify sequential frame ranges
     assert_eq!(proj.items[0].frame_start, 0);
-    assert_eq!(proj.items[0].frame_count, 4);
+    assert_eq!(proj.items[0].frame_count, 6);
 
-    assert_eq!(proj.items[1].frame_start, 4);
+    assert_eq!(proj.items[1].frame_start, 6);
     assert_eq!(proj.items[1].frame_count, 10);
 
-    assert_eq!(proj.items[2].frame_start, 14);
+    assert_eq!(proj.items[2].frame_start, 16);
     assert_eq!(proj.items[2].frame_count, 6);
 
     // Export to binary container
     let container = proj.export_container().expect("Container export failed");
-    assert_eq!(container.total_frames, 20);
+    assert_eq!(container.total_frames, 22);
     assert_eq!(container.playlist.len(), 3);
 
     // Validate 1-based contiguous playlist ranges
     assert_eq!(container.playlist[0].start_frame, 1);
-    assert_eq!(container.playlist[0].end_frame, 4);
+    assert_eq!(container.playlist[0].end_frame, 6);
 
-    assert_eq!(container.playlist[1].start_frame, 5);
-    assert_eq!(container.playlist[1].end_frame, 14);
+    assert_eq!(container.playlist[1].start_frame, 7);
+    assert_eq!(container.playlist[1].end_frame, 16);
 
-    assert_eq!(container.playlist[2].start_frame, 15);
-    assert_eq!(container.playlist[2].end_frame, 20);
+    assert_eq!(container.playlist[2].start_frame, 17);
+    assert_eq!(container.playlist[2].end_frame, 22);
 
     // Write container directly into removable drive root
     let target_path = sd_mock.path().join(&proj.output_filename);
@@ -106,9 +107,9 @@ fn test_export_pipeline_and_removable_drive_hermetic() {
 
     // Read back and validate container on target drive
     let loaded = HologramContainer::read_from_file(&target_path).expect("Failed to read container");
-    assert_eq!(loaded.total_frames, 20);
+    assert_eq!(loaded.total_frames, 22);
     assert_eq!(loaded.playlist.len(), 3);
-    assert_eq!(loaded.frames.len(), 20);
+    assert_eq!(loaded.frames.len(), 22);
     for frame in &loaded.frames {
         assert_eq!(frame.len(), HOLOGRAM_FRAME_SIZE);
     }

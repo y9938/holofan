@@ -7,9 +7,7 @@ use anyhow::{bail, Context, Result};
 use clap::{Args, Parser, Subcommand};
 use formatjs_intl::format_message;
 
-#[cfg(windows)]
-use holofan::gui_win32;
-use holofan::{device, format, gui, i18n, media, polar};
+use holofan::{device, format, gui, i18n, import, media, polar};
 
 use format::{HologramContainer, PlaylistEntry};
 use polar::PolarConfig;
@@ -237,39 +235,15 @@ fn main() -> Result<()> {
     run_platform_gui()
 }
 
-#[cfg(windows)]
 fn run_platform_gui() -> anyhow::Result<()> {
+    #[cfg(windows)]
     hide_console_window_if_gui();
-    if let Err(e) = gui::run_gui() {
-        eprintln!("Failed to launch hardware eframe/WGPU GUI ({}). Falling back to native Win32 GDI interface...", e);
-        let res = gui_win32::run_win32_gui();
-        eprintln!("Win32 result: {:?}", res);
-        res
-    } else {
-        Ok(())
-    }
-}
-
-#[cfg(windows)]
-fn run_platform_gui_with_files(files: Vec<PathBuf>) -> anyhow::Result<()> {
-    hide_console_window_if_gui();
-    if let Err(e) = gui::run_gui_with_files(files.clone()) {
-        eprintln!("Failed to launch hardware eframe/WGPU GUI ({}). Falling back to native Win32 GDI interface...", e);
-        let res = gui_win32::run_win32_gui_with_files(files);
-        eprintln!("Win32 result: {:?}", res);
-        res
-    } else {
-        Ok(())
-    }
-}
-
-#[cfg(not(windows))]
-fn run_platform_gui() -> anyhow::Result<()> {
     gui::run_gui()
 }
 
-#[cfg(not(windows))]
 fn run_platform_gui_with_files(files: Vec<PathBuf>) -> anyhow::Result<()> {
+    #[cfg(windows)]
+    hide_console_window_if_gui();
     gui::run_gui_with_files(files)
 }
 
@@ -381,18 +355,12 @@ fn handle_create(args: &CreateArgs, verbose: bool) -> Result<()> {
 
     let frames = if args.input.is_dir() {
         let mut loaded = Vec::new();
-        let mut paths = fs::read_dir(&args.input)?
-            .map(|entry| entry.map(|entry| entry.path()))
-            .collect::<std::io::Result<Vec<_>>>()?;
-        paths.sort();
-
+        let paths = import::list_folder_media(&args.input)?;
         for path in paths {
-            if path.is_file() && is_supported_media_path(&path) {
-                loaded.extend(
-                    media::load_media_to_polar_frames_with_options(&path, &config, &media_options)
-                        .with_context(|| format!("Failed to load media file {}", path.display()))?,
-                );
-            }
+            loaded.extend(
+                media::load_media_to_polar_frames_with_options(&path, &config, &media_options)
+                    .with_context(|| format!("Failed to load media file {}", path.display()))?,
+            );
         }
         if loaded.is_empty() {
             bail!(
@@ -440,16 +408,6 @@ fn handle_create(args: &CreateArgs, verbose: bool) -> Result<()> {
     );
 
     Ok(())
-}
-
-fn is_supported_media_path(path: &Path) -> bool {
-    matches!(
-        path.extension()
-            .and_then(|extension| extension.to_str())
-            .map(str::to_ascii_lowercase)
-            .as_deref(),
-        Some("jpg" | "jpeg" | "png" | "bmp" | "gif" | "webp")
-    )
 }
 
 /// Handler for 'unpack' command.
